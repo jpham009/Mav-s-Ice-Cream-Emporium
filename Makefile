@@ -1,5 +1,5 @@
 #compiler options
-CXXFLAGS+=--std=c++11 -g
+CXXFLAGS+=--std=c++11
 
 #source files
 SOURCES=$(wildcard *.cpp)
@@ -8,7 +8,7 @@ SOURCES=$(wildcard *.cpp)
 OBJECTS=$(SOURCES:.cpp=.o)
 
 #main link objects
-MOBJECTS=$(filter-out test.o,$(OBJECTS))
+MOBJECTS=$(filter-out test%,$(OBJECTS))
 
 #test link objects
 TOBJECTS=$(filter-out main.o,$(OBJECTS))
@@ -26,6 +26,7 @@ EXECUTABLE=mice
 $(EXECUTABLE): $(MOBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(INCLUDE)
 
+test: CXXFLAGS+= -g
 test: $(TOBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(INCLUDE)
 
