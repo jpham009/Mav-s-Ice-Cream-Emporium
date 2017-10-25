@@ -7,6 +7,12 @@ SOURCES=$(wildcard *.cpp)
 #object files
 OBJECTS=$(SOURCES:.cpp=.o)
 
+#main link objects
+MOBJECTS=$(filter-out test.o,$(OBJECTS))
+
+#test link objects
+TOBJECTS=$(filter-out main.o,$(OBJECTS))
+
 #included libraries
 INCLUDE=
 
@@ -17,14 +23,18 @@ EXECUTABLE=mice
 #$^ - is all the dependencies (in this case =$(OBJECTS) )
 #$@ - is the result name (in this case =$(EXECUTABLE) )
 
-all: $(EXECUTABLE)
-
-$(EXECUTABLE): $(OBJECTS)
+$(EXECUTABLE): $(MOBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(INCLUDE)
+
+test: $(TOBJECTS)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(INCLUDE)
+
+debug: CXXFLAGS+= -g
+debug: $(EXECUTABLE)
 
 %.o: %.cpp *.h
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
 
 clean:
-	-rm -f $(EXECUTABLE) $(OBJECTS)
+	-rm -f $(EXECUTABLE) test $(OBJECTS)
 
