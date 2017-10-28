@@ -12,7 +12,7 @@ class Mainwin : public Gtk::Window
         //void on_file_new_click();             // Create a new Emporium
         //void on_create_order_click();         // Create a new order
         //void on_create_customer_click();      // Create a new customer
-        //void on_create_item_click();          // Create a new item
+        void on_create_item_click();          // Create a new item
         //void on_create_server_click();        // Create a new server
         //void on_about_click();                // Display About dialog
         void on_quit_click();                 // Exit the program

@@ -61,7 +61,7 @@ Mainwin::Mainwin() {
     //         I T E M 
     // (Owner, Manager) “Create a New Container, Ice Cream Flavor, or Topping” Append Item to the Create menu
     Gtk::MenuItem *menuitem_item = Gtk::manage(new Gtk::MenuItem("_Item...", true));
-    //menuitem_item->signal_activate().connect(sigc::mem_fun(*this, &Mainwin::on_create_item_click));
+    menuitem_item->signal_activate().connect(sigc::mem_fun(*this, &Mainwin::on_create_item_click));
     createmenu->append(*menuitem_item);
 
     //         S E R V E R
@@ -118,6 +118,125 @@ Mainwin::~Mainwin() { }
 
 void Mainwin::on_quit_click() {
     hide();
+}
+
+void Mainwin::on_create_item_click() {
+
+    // /////////////////////////////
+    // Select Item Type
+    Gtk::Dialog dialog_type{"Select Item Type", *this};
+    //dialog_type.set_title("Select Item Type");
+    const int WIDTH = 15;
+
+    // Type
+    Gtk::HBox b_type;
+
+    Gtk::Label l_type{"Type:"};
+    l_type.set_width_chars(WIDTH);
+    b_type.pack_start(l_type, Gtk::PACK_SHRINK);
+
+    // TODO: Replace this with 3 large, colorful buttons
+    Gtk::ComboBoxText c_type;
+    c_type.set_size_request(WIDTH*10);
+    const int CONTAINER = 0;
+    c_type.append("Container");
+    const int SCOOP = 1;
+    c_type.append("Ice Cream Flavor");
+    const int TOPPING = 2;
+    c_type.append("Topping");
+    b_type.pack_start(c_type, Gtk::PACK_SHRINK);
+    dialog_type.get_vbox()->pack_start(b_type, Gtk::PACK_SHRINK);
+
+    // Show dialog_type
+    dialog_type.add_button("Cancel", 0);
+    dialog_type.add_button("OK", 1);
+    dialog_type.show_all();
+    if (dialog_type.run() != 1) return;
+
+    int type = c_type.get_active_row_number();
+
+    dialog_type.close();
+
+    // //////////////////////////////
+    // Define Item
+
+    Gtk::Dialog dialog;
+    if (type == CONTAINER) dialog.set_title("Create Container");
+    else if (type == SCOOP) dialog.set_title("Create Flavor");
+    else dialog.set_title("Create Topping");
+    dialog.set_transient_for(*this);
+
+    // Name 
+    Gtk::HBox b_name;
+
+    Gtk::Label l_name{"Name:"};
+    l_name.set_width_chars(WIDTH);
+    b_name.pack_start(l_name, Gtk::PACK_SHRINK);
+
+    Gtk::Entry e_name;
+    e_name.set_max_length(WIDTH*4);
+    b_name.pack_start(e_name, Gtk::PACK_SHRINK);
+    dialog.get_vbox()->pack_start(b_name, Gtk::PACK_SHRINK);
+
+    // TODO: Replace this with a Gtk::TextView inside a Gtk::ScrolledWindow
+    // Description
+    Gtk::HBox b_desc;
+
+    Gtk::Label l_desc{"Description:"};
+    l_desc.set_width_chars(WIDTH);
+    b_desc.pack_start(l_desc, Gtk::PACK_SHRINK);
+
+    Gtk::Entry e_desc;
+    e_desc.set_max_length(WIDTH*4);
+    b_desc.pack_start(e_desc, Gtk::PACK_SHRINK);
+    dialog.get_vbox()->pack_start(b_desc, Gtk::PACK_SHRINK);
+
+    // Cost
+    Gtk::HBox b_cost;
+
+    Gtk::Label l_cost{"Cost:"};
+    l_cost.set_width_chars(WIDTH);
+    b_cost.pack_start(l_cost, Gtk::PACK_SHRINK);
+
+    Gtk::Entry e_cost;
+    e_cost.set_max_length(WIDTH*4);
+    b_cost.pack_start(e_cost, Gtk::PACK_SHRINK);
+    dialog.get_vbox()->pack_start(b_cost, Gtk::PACK_SHRINK);
+
+    // Price
+    Gtk::HBox b_price;
+
+    Gtk::Label l_price{"Price:"};
+    l_price.set_width_chars(WIDTH);
+    b_price.pack_start(l_price, Gtk::PACK_SHRINK);
+
+    Gtk::Entry e_price;
+    e_price.set_max_length(WIDTH*4);
+    b_price.pack_start(e_price, Gtk::PACK_SHRINK);
+    dialog.get_vbox()->pack_start(b_price, Gtk::PACK_SHRINK);
+
+    // Max Scoops (Container only)
+    if (type == CONTAINER) {
+        Gtk::HBox b_max_scoops;
+
+        Gtk::Label l_max_scoops{"Max Scoops:"};
+        l_max_scoops.set_width_chars(WIDTH);
+        b_max_scoops.pack_start(l_max_scoops, Gtk::PACK_SHRINK);
+
+        Gtk::Entry e_max_scoops;
+        e_max_scoops.set_max_length(WIDTH*4);
+        b_max_scoops.pack_start(e_max_scoops, Gtk::PACK_SHRINK);
+        dialog.get_vbox()->pack_start(b_max_scoops, Gtk::PACK_SHRINK);
+    }
+
+    // Show dialog
+    dialog.add_button("Cancel", 0);
+    dialog.add_button("OK", 1);
+    dialog.show_all();
+    if (dialog.run() != 1) return;
+
+    // Instance item
+    dialog.close();
 }
 
 // void Mainwin::on_about_click() {
