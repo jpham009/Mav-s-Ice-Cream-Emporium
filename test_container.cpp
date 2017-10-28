@@ -22,17 +22,20 @@ bool test_container() {
       container.description() != x_description ||
       container.cost() != x_cost ||
       container.price() != x_price ||
+      container.type() != "Container" ||
       container.max_scoops() != x_max_scoops) {
     std::cerr << "#### Container constructor fail" << std::endl;
     std::cerr << "Expected: " << x_name << ','
                               << x_description << ','
                               << x_cost << ','
                               << x_price << ','
+                              << "Container" << ','
                               << x_max_scoops << std::endl;
     std::cerr << "Actual:   " << container.name() << ','
                               << container.description() << ','
                               << container.cost() << ','
                               << container.price() << ','
+                              << container.type() << ','
                               << container.max_scoops() << std::endl;
     passed = false;
   }

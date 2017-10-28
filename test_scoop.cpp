@@ -21,17 +21,20 @@ bool test_scoop() {
       scoop.description() != x_description ||
       scoop.cost() != x_cost ||
       scoop.price() != x_price ||
+      scoop.type() != "Scoop" ||
       scoop.quantity() != 0) {
     std::cerr << "#### Scoop constructor fail" << std::endl;
     std::cerr << "Expected: " << x_name << ','
                               << x_description << ','
                               << x_cost << ','
                               << x_price << ','
+                              << "Scoop" << ','
                               << '0' << std::endl;
     std::cerr << "Actual:   " << scoop.name() << ','
                               << scoop.description() << ','
                               << scoop.cost() << ','
                               << scoop.price() << ','
+                              << scoop.type() << ','
                               << scoop.quantity() << std::endl;
     passed = false;
   }

@@ -22,17 +22,20 @@ bool test_topping() {
       topping.description() != x_description ||
       topping.cost() != x_cost ||
       topping.price() != x_price ||
+      topping.type() != "Topping" ||
       topping.amount() != Topping::EXTRA_AMOUNT) {
     std::cerr << "#### Topping constructor fail" << std::endl;
     std::cerr << "Expected: " << x_name << ','
                               << x_description << ','
                               << x_cost << ','
                               << x_price << ','
+                              << "Topping" << ','
                               << x_amount << std::endl;
     std::cerr << "Actual:   " << topping.name() << ','
                               << topping.description() << ','
                               << topping.cost() << ','
                               << topping.price() << ','
+                              << topping.type() << ','
                               << topping.amount() << std::endl;
     passed = false;
   }

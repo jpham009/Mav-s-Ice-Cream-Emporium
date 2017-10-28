@@ -14,7 +14,7 @@ MOBJECTS=$(filter-out test%,$(OBJECTS))
 TOBJECTS=$(filter-out main.o,$(OBJECTS))
 
 #included libraries
-INCLUDE=
+INCLUDE=`/usr/bin/pkg-config gtkmm-3.0 --cflags --libs`
 
 #executable filename
 EXECUTABLE=mice
@@ -31,6 +31,7 @@ test: $(TOBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(INCLUDE)
 
 debug: CXXFLAGS+= -g
+debug: clean
 debug: $(EXECUTABLE)
 
 %.o: %.cpp *.h

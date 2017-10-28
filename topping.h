@@ -5,6 +5,7 @@ class Topping : public Item {
   public:
     Topping(std::string name, std::string description, double cost, double price,
               int amount);
+    std::string type() override;
     int amount();
     const static int LIGHT_AMOUNT = 1;
     const static int NORMAL_AMOUNT = 2;
