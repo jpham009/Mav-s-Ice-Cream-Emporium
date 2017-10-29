@@ -1,3 +1,6 @@
+#ifndef _ITEM_H
+#define _ITEM_H
+
 #include <string>
 
 class Item {
@@ -19,3 +22,4 @@ class Item {
     int _quantity;
     // Gtk::Image _photo;
 };
+#endif

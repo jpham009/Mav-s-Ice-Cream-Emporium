@@ -1,3 +1,6 @@
+#ifndef _CONTAINER_H
+#define _CONTAINER_H
+
 #include "item.h"
 
 class Container : public Item {
@@ -9,3 +12,4 @@ class Container : public Item {
   private:
     int _max_scoops;
 };
+#endif

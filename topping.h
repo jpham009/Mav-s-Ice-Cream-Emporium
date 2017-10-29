@@ -1,3 +1,6 @@
+#ifndef _TOPPING_H
+#define _TOPPING_H
+
 #include "item.h"
 
 
@@ -15,3 +18,5 @@ class Topping : public Item {
     void _set_amount(int amount);
     int _amount;
 };
+
+#endif
