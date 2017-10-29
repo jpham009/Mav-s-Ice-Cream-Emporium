@@ -216,7 +216,9 @@ void Mainwin::on_create_item_click() {
     dialog.get_vbox()->pack_start(b_price, Gtk::PACK_SHRINK);
 
     // Max Scoops (Container only)
-    if (type == CONTAINER) {
+    // TODO: TWILIGHT ZONE: Only works for "if" beside last line
+    //       Check assembly - is this an optimizer bug?
+    // if (type == CONTAINER) {
         Gtk::HBox b_max_scoops;
 
         Gtk::Label l_max_scoops{"Max Scoops:"};
@@ -226,6 +228,7 @@ void Mainwin::on_create_item_click() {
         Gtk::Entry e_max_scoops;
         e_max_scoops.set_max_length(WIDTH*4);
         b_max_scoops.pack_start(e_max_scoops, Gtk::PACK_SHRINK);
+    if (type == CONTAINER) {
         dialog.get_vbox()->pack_start(b_max_scoops, Gtk::PACK_SHRINK);
     }
 
