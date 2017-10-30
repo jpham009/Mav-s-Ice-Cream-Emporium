@@ -5,6 +5,7 @@
 #include "scoop.h"
 #include "topping.h"
 #include <gtkmm.h>
+#include <string>
 
 class Mainwin : public Gtk::Window
 {
@@ -21,10 +22,13 @@ class Mainwin : public Gtk::Window
         void on_quit_click();                         // Exit the program
     private:
         //void create_order();                        // Create a new order
-        //Serving create_serving();                   // Create a new serving
-        //Mice::Container select_container();         // Select a container
-        //Mice::Scoop select_scoop();                 // Select a scoop
-        //Mice::Topping select_topping();             // Select a container
+        //Mice::Serving create_serving();             // Create a new serving
+        int select_container();                       // Select a container index
+        int select_scoop();                           // Select a scoop
+        int select_topping();                         // Select a container
+        int select_from_vector
+            (std::vector<std::string> names, 
+             std::string title);                      // Select from a list of strings
 
         std::vector<Mice::Container> _containers;     // All defined containers
         std::vector<Mice::Scoop> _scoops;             // All defined scoops
