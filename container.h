@@ -3,6 +3,8 @@
 
 #include "item.h"
 
+namespace Mice {
+
 class Container : public Item {
   public:
     Container(std::string name, std::string description, double cost, double price,
@@ -12,4 +14,6 @@ class Container : public Item {
   private:
     int _max_scoops;
 };
+
+}
 #endif

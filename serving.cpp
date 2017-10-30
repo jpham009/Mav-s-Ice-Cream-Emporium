@@ -1,5 +1,7 @@
 #include "serving.h"
 
+namespace Mice {
+
 Serving::Serving(Container container) : _container{container} { }
 Container Serving::container() {return _container;}
 std::vector<Scoop> Serving::scoops() {return _scoops;}
@@ -15,4 +17,6 @@ double Serving::price() {
     for (Scoop scoop : _scoops) total += scoop.price();
     for (Topping topping : _toppings) total += topping.price();
     return total;
+}
+
 }

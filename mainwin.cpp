@@ -1,4 +1,5 @@
 #include "mainwin.h"
+#include <exception>
 
 Mainwin::Mainwin() {
 
@@ -238,7 +239,47 @@ void Mainwin::on_create_item_click() {
     dialog.show_all();
     if (dialog.run() != 1) return;
 
+    bool valid_data = false;
+    double d_cost;
+    double d_price;
+    int i_max_scoops;
+
+    while(!valid_data) {
+        valid_data = true;
+        try {
+            d_cost = std::stoi(e_cost.get_text());
+        } catch(std::exception e) {
+            e_cost.set_text("*** invalid cost ***");
+            valid_data = false;
+        }
+        try {
+            d_price = std::stoi(e_price.get_text());
+        } catch(std::exception e) {
+            e_price.set_text("*** invalid price ***");
+            valid_data = false;
+        }
+        if (type == CONTAINER) {
+            try {
+                i_max_scoops = std::stoi(e_max_scoops.get_text());
+            } catch(std::exception e) {
+                e_max_scoops.set_text("*** invalid max scoops ***");
+                valid_data = false;
+            }
+        }
+    }
+        
     // Instance item
+    if (type == CONTAINER) {
+        Mice::Container c{e_name.get_text(), e_desc.get_text(), d_cost, d_price, i_max_scoops};
+        _containers.push_back(c);
+    } else if (type == SCOOP) {
+        _scoops.push_back(
+            Mice::Scoop{e_name.get_text(), e_desc.get_text(), d_cost, d_price});
+    } else {
+        _toppings.push_back(
+            Mice::Topping{e_name.get_text(), e_desc.get_text(), d_cost, d_price, 0});
+    }
+    
     dialog.close();
 }
 

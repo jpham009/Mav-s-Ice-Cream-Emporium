@@ -15,7 +15,7 @@ bool test_scoop() {
   double x_cost = 0.75;
   double x_price = 1.50;
 
-  Scoop scoop{x_name, x_description, x_cost, x_price};
+  Mice::Scoop scoop{x_name, x_description, x_cost, x_price};
 
   if (scoop.name() != x_name ||
       scoop.description() != x_description ||

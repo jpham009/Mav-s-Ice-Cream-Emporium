@@ -3,6 +3,8 @@
 
 #include <string>
 
+namespace Mice {
+
 class Item {
   public:
     Item(std::string name, std::string description, double cost, double price);
@@ -22,4 +24,6 @@ class Item {
     int _quantity;
     // Gtk::Image _photo;
 };
+
+}
 #endif

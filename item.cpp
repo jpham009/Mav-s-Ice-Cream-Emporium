@@ -1,5 +1,7 @@
 #include "item.h"
 
+namespace Mice {
+
 Item::Item(std::string name, std::string description, double cost, double price)
      : _name{name}, _description{description}, _cost{cost}, _price{price}, _quantity{0} { }
 std::string Item::type() {return "Item";}
@@ -11,3 +13,5 @@ double Item::cost() {return _cost;}
 double Item::price() {return _price;}
 int Item::quantity() {return _quantity;}
 // Gtk::Image photo() {return _photo;}
+
+}

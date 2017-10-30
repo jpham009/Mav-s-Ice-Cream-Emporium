@@ -15,7 +15,7 @@ bool test_item() {
   double x_cost = 0.75;
   double x_price = 1.50;
 
-  Item item{x_name, x_description, x_cost, x_price};
+  Mice::Item item{x_name, x_description, x_cost, x_price};
 
   if (item.name() != x_name ||
       item.description() != x_description ||

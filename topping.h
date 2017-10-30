@@ -3,6 +3,7 @@
 
 #include "item.h"
 
+namespace Mice {
 
 class Topping : public Item {
   public:
@@ -19,4 +20,5 @@ class Topping : public Item {
     int _amount;
 };
 
+}
 #endif

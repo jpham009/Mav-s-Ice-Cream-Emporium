@@ -6,6 +6,8 @@
 #include "topping.h"
 #include <vector>
 
+namespace Mice {
+
 class Serving {
   public:
     Serving(Container container);
@@ -20,4 +22,5 @@ class Serving {
     std::vector<Topping> _toppings;
 };
 
+}
 #endif

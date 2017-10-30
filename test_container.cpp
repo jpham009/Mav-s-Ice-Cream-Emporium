@@ -16,7 +16,7 @@ bool test_container() {
   double x_price = 0.99;
   int x_max_scoops = 3;
 
-  Container container{x_name, x_description, x_cost, x_price, x_max_scoops};
+  Mice::Container container{x_name, x_description, x_cost, x_price, x_max_scoops};
 
   if (container.name() != x_name ||
       container.description() != x_description ||
