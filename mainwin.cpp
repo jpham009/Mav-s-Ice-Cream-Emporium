@@ -1,6 +1,8 @@
 #include "mainwin.h"
 #include <exception>
 #include <stdexcept>
+#include <iostream>
+#include <sstream>
 
 Mainwin::Mainwin() {
 
@@ -34,6 +36,12 @@ Mainwin::Mainwin() {
     //menuitem_new->signal_activate().connect(sigc::mem_fun(*this, &Mainwin::on_new_game_click));
     filemenu->append(*menuitem_new);
 
+    //         E A S T E R   E G G
+    // (TODO: Test Only) “Create a New Emporium” Append Easter Egg to the File menu
+    Gtk::MenuItem *menuitem_easteregg = Gtk::manage(new Gtk::MenuItem("_Easter Egg", true));
+    menuitem_easteregg->signal_activate().connect(sigc::mem_fun(*this, &Mainwin::on_easteregg_click));
+    filemenu->append(*menuitem_easteregg);
+
     //         Q U I T
     // Append Quit to the File menu
     Gtk::MenuItem *menuitem_quit = Gtk::manage(new Gtk::MenuItem("_Quit", true));
@@ -51,7 +59,7 @@ Mainwin::Mainwin() {
     //         O R D E R
     // (All) “Create Delicious Ice Cream Treats” Append Order to the Create menu
     Gtk::MenuItem *menuitem_order = Gtk::manage(new Gtk::MenuItem("_Order...", true));
-    //menuitem_order->signal_activate().connect(sigc::mem_fun(*this, &Mainwin::on_create_order_click));
+    menuitem_order->signal_activate().connect(sigc::mem_fun(*this, &Mainwin::on_create_order_click));
     createmenu->append(*menuitem_order);
 
     //         C U S T O M E R
@@ -124,3 +132,46 @@ void Mainwin::on_quit_click() {
 
 // void Mainwin::on_about_click() {
 // }
+
+void Mainwin::on_create_order_click() {
+    try {
+        // Create a new serving (NOT an order yet!)
+        Mice::Serving serving = create_serving();
+
+        // Convert the serving to text using a string stream
+        std::ostringstream os;
+        os << serving << std::endl;
+
+        // Display the serving is a dialog for confirmation
+        Gtk::MessageDialog dialog{*this, "New Serving"};
+        dialog.set_secondary_text(os.str(), true);
+        dialog.run();
+        dialog.close();
+    } catch(std::runtime_error e) { // User canceled order
+    }
+}
+
+void Mainwin::on_easteregg_click() {
+        _containers.push_back(
+            Mice::Container{"Cone", "Crispy airy delight", 0.25, 0.50, 2});
+        _containers.push_back(
+            Mice::Container{"Waffle Cone", "Crunchy wrapped waffle cake", 0.35, 0.75, 2});
+        _scoops.push_back(
+            Mice::Scoop{"Chocolate", "Rich smooth chocolate ice cream", 0.20, 0.50});
+        _scoops.push_back(
+            Mice::Scoop{"Vanilla", "Real vanilla bean ice cream", 0.20, 0.50});
+        _scoops.push_back(
+            Mice::Scoop{"Strawberry", "Chunks of strawberry wrapped in vanilla ice cream", 0.20, 0.50});
+        _toppings.push_back(
+            Mice::Topping{"Cherry", "Classic marichino cherry", 0.1, 0.2, 0});
+        _toppings.push_back(
+            Mice::Topping{"Chocolate Sauce", "Rich thick chocolate", 0.1, 0.25, 0});
+        _toppings.push_back(
+            Mice::Topping{"Whipped Cream", "Real sweet cream whipped to perfection", 0.1, 0.2, 0});
+
+        // Display acknowledgement
+        Gtk::MessageDialog dialog{*this, "Added 2 containers, 3 scoops, and 3 toppings"};
+        dialog.run();
+        dialog.close();
+ } 
+

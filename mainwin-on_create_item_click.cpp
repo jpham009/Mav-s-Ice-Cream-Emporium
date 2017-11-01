@@ -151,6 +151,18 @@ void Mainwin::on_create_item_click() {
                 valid_data = false;
             }
         }
+        for (Mice::Container c : _containers) if (c.name() == e_name.get_text()) {
+            e_name.set_text("*** duplicate name ***");
+            valid_data = false;
+        }
+        for (Mice::Scoop s : _scoops) if (s.name() == e_name.get_text()) {
+            e_name.set_text("*** duplicate name ***");
+            valid_data = false;
+        }
+        for (Mice::Topping t : _toppings) if (t.name() == e_name.get_text()) {
+            e_name.set_text("*** duplicate name ***");
+            valid_data = false;
+        }
     }
         
     // Instance item

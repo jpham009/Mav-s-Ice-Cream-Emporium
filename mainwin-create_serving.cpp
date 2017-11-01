@@ -1,6 +1,7 @@
 #include "mainwin.h"
 #include <exception>
 #include <stdexcept>
+#include <iostream>
 
 Mice::Serving Mainwin::create_serving() {
     int container = select_container();
@@ -22,5 +23,6 @@ Mice::Serving Mainwin::create_serving() {
         if (topping = -1) break;
         else serving.add_topping(_toppings[topping]);
     }
+
     return serving;
 }

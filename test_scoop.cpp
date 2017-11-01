@@ -1,6 +1,7 @@
 #include "test_scoop.h"
 #include "scoop.h"
 #include <iostream>
+#include <sstream>
 
 bool test_scoop() {
   std::string expected = "";
@@ -17,7 +18,14 @@ bool test_scoop() {
 
   Mice::Scoop scoop{x_name, x_description, x_cost, x_price};
 
-  std::cout << scoop << std::endl;
+  std::ostringstream os;
+  os << scoop;
+
+  if (os.str() != "                            Fudge Ripple $1.50") {
+    std::cerr << "#### Scoop operator<< fail" << std::endl;
+    std::cerr << "Expected:                             Fudge Ripple $1.50" << std::endl;
+    std::cerr << "Actual:   " << os.str() << std::endl;
+  }
 
   if (scoop.name() != x_name ||
       scoop.description() != x_description ||

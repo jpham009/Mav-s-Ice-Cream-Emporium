@@ -1,6 +1,7 @@
 #include "test_topping.h"
 #include "topping.h"
 #include <iostream>
+#include <sstream>
 
 bool test_topping() {
   std::string expected = "";
@@ -18,7 +19,14 @@ bool test_topping() {
 
   Mice::Topping topping{x_name, x_description, x_cost, x_price, x_amount};
 
-  std::cout << topping << std::endl;
+  std::ostringstream os;
+  os << topping;
+
+  if (os.str() != "                       Maraschino Cherry $0.50") {
+    std::cerr << "#### Topping operator<< fail" << std::endl;
+    std::cerr << "Expected:                        Maraschino Cherry $0.50" << std::endl;
+    std::cerr << "Actual:   " << os.str() << std::endl;
+  }
 
   if (topping.name() != x_name ||
       topping.description() != x_description ||

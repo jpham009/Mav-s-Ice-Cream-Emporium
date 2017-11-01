@@ -15,18 +15,19 @@ class Mainwin : public Gtk::Window
         virtual ~Mainwin();
     protected:
         //void on_file_new_click();                   // Create a new Emporium
-        //void on_create_order_click();               // Create a new order
+        void on_create_order_click();                 // Create a new order
         //void on_create_customer_click();            // Create a new customer
         void on_create_item_click();                  // Create a new item
         //void on_create_server_click();              // Create a new server
         //void on_about_click();                      // Display About dialog
         void on_quit_click();                         // Exit the program
+        void on_easteregg_click();                    // TODO: For test only
     private:
         //void create_order();                        // Create a new order
-        Mice::Serving create_serving();             // Create a new serving
+        Mice::Serving create_serving();               // Create a new serving
         int select_container();                       // Select a container index
-        int select_scoop();                           // Select a scoop
-        int select_topping();                         // Select a container
+        int select_scoop();                           // Select a scoop index
+        int select_topping();                         // Select a container index
         int select_from_vector
             (std::vector<std::string> names, 
              std::string title);                      // Select from a list of strings

@@ -13,11 +13,11 @@ class Serving {
     Serving(Container container);
     void add_scoop(Scoop scoop);
     void add_topping(Topping topping);
-    Container container();
-    std::vector<Scoop> scoops();
-    std::vector<Topping> toppings();
-    double cost();
-    double price();
+    Container container() const;
+    std::vector<Scoop> scoops() const;
+    std::vector<Topping> toppings() const;
+    double cost() const;
+    double price() const;
   private:
     Container _container;
     std::vector<Scoop> _scoops;
@@ -25,4 +25,7 @@ class Serving {
 };
 
 }
+
+std::ostream& operator<<(std::ostream& os, const Mice::Serving& serving);
+
 #endif
