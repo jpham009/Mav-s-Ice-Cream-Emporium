@@ -17,6 +17,8 @@ bool test_item() {
 
   Mice::Item item{x_name, x_description, x_cost, x_price};
 
+  std::cout << item << std::endl;
+
   if (item.name() != x_name ||
       item.description() != x_description ||
       item.cost() != x_cost ||

@@ -18,6 +18,8 @@ bool test_topping() {
 
   Mice::Topping topping{x_name, x_description, x_cost, x_price, x_amount};
 
+  std::cout << topping << std::endl;
+
   if (topping.name() != x_name ||
       topping.description() != x_description ||
       topping.cost() != x_cost ||

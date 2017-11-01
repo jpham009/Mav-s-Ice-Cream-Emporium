@@ -17,6 +17,8 @@ bool test_scoop() {
 
   Mice::Scoop scoop{x_name, x_description, x_cost, x_price};
 
+  std::cout << scoop << std::endl;
+
   if (scoop.name() != x_name ||
       scoop.description() != x_description ||
       scoop.cost() != x_cost ||

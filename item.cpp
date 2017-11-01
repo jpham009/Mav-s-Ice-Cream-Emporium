@@ -1,17 +1,34 @@
 #include "item.h"
+#include <iostream>
+#include <iomanip>
 
 namespace Mice {
 
 Item::Item(std::string name, std::string description, double cost, double price)
      : _name{name}, _description{description}, _cost{cost}, _price{price}, _quantity{0} { }
-std::string Item::type() {return "Item";}
+std::string Item::type() const {return "Item";}
 void Item::restock(int quantity) {_quantity  = quantity;}
 void Item::consume(int quantity) {_quantity -= quantity;}
-std::string Item::name() {return _name;}
-std::string Item::description() {return _description;}
-double Item::cost() {return _cost;}
-double Item::price() {return _price;}
-int Item::quantity() {return _quantity;}
+std::string Item::name() const {return _name;}
+std::string Item::description() const {return _description;}
+double Item::cost() const {return _cost;}
+double Item::price() const {return _price;}
+int Item::quantity() const {return _quantity;}
 // Gtk::Image photo() {return _photo;}
-
 }
+
+/*
+std::ostream& operator<<(std::ostream& os, const Mice::Item& item) {
+    os << item.name() << " (" << item.description() << ") cost: $" 
+       << std::setprecision(2) << std::fixed << item.cost() << ", price: $" << item.price() 
+       << ", quantity: " << item.quantity();
+    return os;
+}
+*/
+
+std::ostream& operator<<(std::ostream& os, const Mice::Item& item) {
+    os << std::setw(40) << item.name() << " $" 
+       << std::setprecision(2) << std::fixed << item.price(); 
+    return os;
+}
+

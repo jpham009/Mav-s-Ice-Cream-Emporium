@@ -18,6 +18,8 @@ bool test_container() {
 
   Mice::Container container{x_name, x_description, x_cost, x_price, x_max_scoops};
 
+  std::cout << container << std::endl;
+
   if (container.name() != x_name ||
       container.description() != x_description ||
       container.cost() != x_cost ||
