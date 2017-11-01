@@ -1,6 +1,7 @@
 #include "mainwin.h"
 #include <exception>
 #include <stdexcept>
+#include <iostream>
 
 void Mainwin::on_create_item_click() {
 
@@ -132,13 +133,13 @@ void Mainwin::on_create_item_click() {
 
         valid_data = true;
         try {
-            d_cost = std::stoi(e_cost.get_text());
+            d_cost = std::stod(e_cost.get_text());
         } catch(std::exception e) {
             e_cost.set_text("*** invalid cost ***");
             valid_data = false;
         }
         try {
-            d_price = std::stoi(e_price.get_text());
+            d_price = std::stod(e_price.get_text());
         } catch(std::exception e) {
             e_price.set_text("*** invalid price ***");
             valid_data = false;
@@ -169,12 +170,15 @@ void Mainwin::on_create_item_click() {
     if (type == CONTAINER) {
         Mice::Container c{e_name.get_text(), e_desc.get_text(), d_cost, d_price, i_max_scoops};
         _containers.push_back(c);
+        std::cout << c << std::endl;
     } else if (type == SCOOP) {
-        _scoops.push_back(
-            Mice::Scoop{e_name.get_text(), e_desc.get_text(), d_cost, d_price});
+        Mice::Scoop s{e_name.get_text(), e_desc.get_text(), d_cost, d_price};
+        _scoops.push_back(s);
+        std::cout << s << std::endl;
     } else {
-        _toppings.push_back(
-            Mice::Topping{e_name.get_text(), e_desc.get_text(), d_cost, d_price, 0});
+        Mice::Topping t{e_name.get_text(), e_desc.get_text(), d_cost, d_price, 0};
+        _toppings.push_back(t);
+        std::cout << t << std::endl;
     }
     
     dialog.close();

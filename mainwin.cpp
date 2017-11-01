@@ -154,16 +154,7 @@ void Mainwin::on_create_order_click() {
         // Create a new serving (NOT an order yet!)
         Mice::Serving serving = create_serving();
         _servings.push_back(serving);
-
-        // Convert the serving to text using a string stream
-        std::ostringstream os;
-        os << serving << std::endl;
-
-        // Display the serving is a dialog for confirmation
-        Gtk::MessageDialog dialog{*this, "New Serving"};
-        dialog.set_secondary_text("<tt>" + os.str() + "</tt>", true);
-        dialog.run();
-        dialog.close();
+        std::cout << serving << std::endl;  // TODO: Temporary - replace with confirmation dialog
     } catch(std::runtime_error e) { // User canceled order
     }
 }
