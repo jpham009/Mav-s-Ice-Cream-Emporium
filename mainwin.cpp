@@ -90,7 +90,7 @@ Mainwin::Mainwin() {
     //           A B O U T
     // Append About to the Help menu
     Gtk::MenuItem *menuitem_about = Gtk::manage(new Gtk::MenuItem("About", true));
-    //menuitem_about->signal_activate().connect(sigc::mem_fun(*this, &Mainwin::on_about_click));
+    menuitem_about->signal_activate().connect(sigc::mem_fun(*this, &Mainwin::on_about_click));
     helpmenu->append(*menuitem_about);
 
     // /////////////
@@ -100,11 +100,27 @@ Mainwin::Mainwin() {
     vbox->add(*toolbar);
 
     //     N E W   E M P O R I U M
-    // Add a new game icon
+    // Add a new emporium icon
     Gtk::ToolButton *new_emporium_button = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::NEW));
     new_emporium_button->set_tooltip_markup("Create a New Emporium");
     //new_emporium_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_new_emporium_click));
     toolbar->append(*new_emporium_button);
+
+    //     C R E A T E   O R D E R
+    // Add a Create Order icon
+    Gtk::Image *create_order_button_image = Gtk::manage(new Gtk::Image("new_order.png"));
+    Gtk::ToolButton *create_order_button = Gtk::manage(new Gtk::ToolButton(*create_order_button_image));
+    create_order_button->set_tooltip_markup("Create a new order");
+    create_order_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_create_order_click));
+    toolbar->append(*create_order_button);
+
+    //     C R E A T E   C R E A T E   I T E M
+    // Add a Create Item icon
+    Gtk::Image *create_item_button_image = Gtk::manage(new Gtk::Image("create_item.png"));
+    Gtk::ToolButton *create_item_button = Gtk::manage(new Gtk::ToolButton(*create_item_button_image));
+    create_item_button->set_tooltip_markup("Create a new item");
+    create_item_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_create_item_click));
+    toolbar->append(*create_item_button);
 
     //     Q U I T
     // Add a icon for quitting
@@ -175,4 +191,22 @@ void Mainwin::on_easteregg_click() {
         dialog.run();
         dialog.close();
  } 
+
+void Mainwin::on_about_click() {
+    Gtk::AboutDialog dialog{};
+    dialog.set_transient_for(*this);
+    dialog.set_program_name("Mav's Ice Cream Emporium");
+    auto logo = Gdk::Pixbuf::create_from_file("logo.png");
+    dialog.set_logo(logo);
+    dialog.set_version("Sprint 2");
+    dialog.set_copyright("Copyright 2017");
+    dialog.set_license_type(Gtk::License::LICENSE_GPL_3_0);
+    std::vector< Glib::ustring > authors = {"George F. Rice"};
+    dialog.set_authors(authors);
+    std::vector< Glib::ustring > artists = {"Logo by Schmidsi, https://pixabay.com/en/ice-ice-cream-cone-ice-ball-pink-1429596/",
+                                            "Ice Cream Cone by Patrick Trouvé from the Noun Project, https://thenounproject.com/term/ice-cream-cone/63026/"};
+    dialog.set_artists(artists);
+    dialog.run();
+}
+
 

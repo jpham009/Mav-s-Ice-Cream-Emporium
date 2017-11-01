@@ -19,7 +19,7 @@ class Mainwin : public Gtk::Window
         //void on_create_customer_click();            // Create a new customer
         void on_create_item_click();                  // Create a new item
         //void on_create_server_click();              // Create a new server
-        //void on_about_click();                      // Display About dialog
+        void on_about_click();                        // Display About dialog
         void on_quit_click();                         // Exit the program
         void on_easteregg_click();                    // TODO: For test only
     private:
