@@ -22,9 +22,9 @@ bool test_topping() {
   std::ostringstream os;
   os << topping;
 
-  if (os.str() != "                       Maraschino Cherry $0.50") {
+  if (os.str() != "              Topping: Maraschino Cherry $0.50") {
     std::cerr << "#### Topping operator<< fail" << std::endl;
-    std::cerr << "Expected:                        Maraschino Cherry $0.50" << std::endl;
+    std::cerr << "Expected:               Topping: Maraschino Cherry $0.50" << std::endl;
     std::cerr << "Actual:   " << os.str() << std::endl;
   }
 

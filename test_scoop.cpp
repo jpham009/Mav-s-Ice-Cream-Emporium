@@ -21,9 +21,9 @@ bool test_scoop() {
   std::ostringstream os;
   os << scoop;
 
-  if (os.str() != "                            Fudge Ripple $1.50") {
+  if (os.str() != "                     Scoop: Fudge Ripple $1.50") {
     std::cerr << "#### Scoop operator<< fail" << std::endl;
-    std::cerr << "Expected:                             Fudge Ripple $1.50" << std::endl;
+    std::cerr << "Expected:                      Scoop: Fudge Ripple $1.50" << std::endl;
     std::cerr << "Actual:   " << os.str() << std::endl;
   }
 

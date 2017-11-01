@@ -35,6 +35,7 @@ class Mainwin : public Gtk::Window
         std::vector<Mice::Container> _containers;     // All defined containers
         std::vector<Mice::Scoop> _scoops;             // All defined scoops
         std::vector<Mice::Topping> _toppings;         // All defined toppings
+        std::vector<Mice::Serving> _servings;         // All defined servings
 };
 #endif 
 

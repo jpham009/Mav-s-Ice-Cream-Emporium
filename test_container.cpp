@@ -22,9 +22,9 @@ bool test_container() {
   std::ostringstream os;
   os << container;
 
-  if (os.str() != "                             Waffle Cone $0.99") {
+  if (os.str() != "                  Container: Waffle Cone $0.99") {
     std::cerr << "#### Container operator<< fail" << std::endl;
-    std::cerr << "Expected:                              Waffle Cone $0.99" << std::endl;
+    std::cerr << "Expected:                   Container: Waffle Cone $0.99" << std::endl;
     std::cerr << "Actual:   " << os.str() << std::endl;
   }
 

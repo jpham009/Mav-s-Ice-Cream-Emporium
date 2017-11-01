@@ -137,6 +137,7 @@ void Mainwin::on_create_order_click() {
     try {
         // Create a new serving (NOT an order yet!)
         Mice::Serving serving = create_serving();
+        _servings.push_back(serving);
 
         // Convert the serving to text using a string stream
         std::ostringstream os;
@@ -144,7 +145,7 @@ void Mainwin::on_create_order_click() {
 
         // Display the serving is a dialog for confirmation
         Gtk::MessageDialog dialog{*this, "New Serving"};
-        dialog.set_secondary_text(os.str(), true);
+        dialog.set_secondary_text("<tt>" + os.str() + "</tt>", true);
         dialog.run();
         dialog.close();
     } catch(std::runtime_error e) { // User canceled order
@@ -155,7 +156,7 @@ void Mainwin::on_easteregg_click() {
         _containers.push_back(
             Mice::Container{"Cone", "Crispy airy delight", 0.25, 0.50, 2});
         _containers.push_back(
-            Mice::Container{"Waffle Cone", "Crunchy wrapped waffle cake", 0.35, 0.75, 2});
+            Mice::Container{"Waffle Cone", "Crunchy wrapped waffle cake", 0.35, 0.75, 3});
         _scoops.push_back(
             Mice::Scoop{"Chocolate", "Rich smooth chocolate ice cream", 0.20, 0.50});
         _scoops.push_back(

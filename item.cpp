@@ -26,8 +26,9 @@ std::ostream& operator<<(std::ostream& os, const Mice::Item& item) {
 }
 */
 
+// POLYMORPHISM at item.name()
 std::ostream& operator<<(std::ostream& os, const Mice::Item& item) {
-    os << std::setw(40) << item.name() << " $" 
+    os << std::setw(40) << item.type() + ": " + item.name() << " $" 
        << std::setprecision(2) << std::fixed << item.price(); 
     return os;
 }

@@ -21,9 +21,9 @@ bool test_item() {
   std::ostringstream os;
   os << item;
 
-  if (os.str() != "                            Fudge Ripple $1.50") {
+  if (os.str() != "                      Item: Fudge Ripple $1.50") {
     std::cerr << "#### Item operator<< fail" << std::endl;
-    std::cerr << "Expected:                             Fudge Ripple $1.50" << std::endl;
+    std::cerr << "Expected:                       Item: Fudge Ripple $1.50" << std::endl;
     std::cerr << "Actual:   " << os.str() << std::endl;
   }
 

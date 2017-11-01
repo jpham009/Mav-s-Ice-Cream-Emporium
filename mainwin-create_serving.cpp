@@ -13,14 +13,14 @@ Mice::Serving Mainwin::create_serving() {
     for (int i=0; i<_containers[container].max_scoops(); ++i) {
         int scoop = select_scoop();
         if (scoop == -1) break;
-        serving.add_scoop(_scoops[i]);
+        serving.add_scoop(_scoops[scoop]);
         has_no_scoops = false;
     }
     if (has_no_scoops) throw std::runtime_error("Canceled");
 
     while (true) {
         int topping = select_topping();
-        if (topping = -1) break;
+        if (topping == -1) break;
         else serving.add_topping(_toppings[topping]);
     }
 
