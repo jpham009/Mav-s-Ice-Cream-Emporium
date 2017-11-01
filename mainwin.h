@@ -4,6 +4,7 @@
 #include "container.h"
 #include "scoop.h"
 #include "topping.h"
+#include "serving.h"
 #include <gtkmm.h>
 #include <string>
 
@@ -22,7 +23,7 @@ class Mainwin : public Gtk::Window
         void on_quit_click();                         // Exit the program
     private:
         //void create_order();                        // Create a new order
-        //Mice::Serving create_serving();             // Create a new serving
+        Mice::Serving create_serving();             // Create a new serving
         int select_container();                       // Select a container index
         int select_scoop();                           // Select a scoop
         int select_topping();                         // Select a container

@@ -11,6 +11,8 @@ namespace Mice {
 class Serving {
   public:
     Serving(Container container);
+    void add_scoop(Scoop scoop);
+    void add_topping(Topping topping);
     Container container();
     std::vector<Scoop> scoops();
     std::vector<Topping> toppings();
