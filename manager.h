@@ -14,6 +14,8 @@
 
 using namespace std;
 
+namespace Mice{
+
 class Manager : public Person {
 	public:
 	Manager(std::string name, std::string phone, std::string id, double salary);
@@ -49,5 +51,7 @@ class Manager : public Person {
 
 
 };
+
+}
 #endif //_MANAGER_H
 

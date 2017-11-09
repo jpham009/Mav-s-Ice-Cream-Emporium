@@ -4,6 +4,8 @@
 #include <iostream>
 #include <sstream>
 static int order_counter = 1; //order numbers
+static int customer_id = 10000; 
+static int employee_id = 20000;
 
 Mainwin::Mainwin() {
 
@@ -153,14 +155,14 @@ Mainwin::Mainwin() {
     list_customers_image = Gtk::manage(new Gtk::Image("list_customers.png"));
     Gtk::ToolButton *list_customers_button = Gtk::manage(new Gtk::ToolButton(*list_customers_image));
     list_customers_button->set_tooltip_markup("List All Customers");
-    list_customers_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_quit_click));
+    list_customers_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_list_customers));
     toolbar2->append(*list_customers_button);
 
 	// 	L I S T  A L L  E M P L O Y E E S 
     list_servers_image = Gtk::manage(new Gtk::Image("list_employees.png"));
     Gtk::ToolButton *list_servers_button = Gtk::manage(new Gtk::ToolButton(*list_servers_image));
     list_servers_button->set_tooltip_markup("List All Employees");
-    list_servers_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_quit_click));
+    list_servers_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_list_employees));
     toolbar2->append(*list_servers_button);
 
 
@@ -212,6 +214,9 @@ Mainwin::Mainwin() {
 
 	//Auto-Load Defaults
 	on_load_defaults_click();
+
+	//Easter Egg - Test Persons
+	easter_egg(); 
 	
 	//Status bar initialize
 	status();
@@ -301,6 +306,38 @@ void Mainwin::on_load_defaults_click() {
         dialog->close();
  } 
 
+
+void Mainwin::easter_egg(){
+	_customers.push_back(Mice::Customer{"Cheryl Dyer", "8178902356", std::to_string(customer_id++)});
+	_customers.push_back(Mice::Customer{"Daniel Fagan", "8178809444", std::to_string(customer_id++)});
+	_customers.push_back(Mice::Customer{"Michael Fagan", "8178912365", std::to_string(customer_id++)});
+
+	_servers.push_back(Mice::Server{"Michelle Pham", "6825590111", std::to_string(employee_id++), 12.50});
+	_servers.push_back(Mice::Server{"Russell Pham", "6824914447", std::to_string(employee_id++), 11.50});
+	_servers.push_back(Mice::Server{"Connor Pham", "6825932036", std::to_string(employee_id++), 11.75});
+
+	_managers.push_back(Mice::Manager{"Johnny Pham", "6825590692", std::to_string(employee_id++), 19.50});	
+
+}
+
+void Mainwin::on_list_employees() {
+	std::string title = "<span font='14' weight='bold' color='#0077ff'>\nM.I.C.E. Employees List</span>\n\n";
+	std::string hmanagers = "<span weight='bold' underline='single'>Managers</span>\n";
+	std::string hservers = "<span weight='bold' underline='single'>Servers</span>\n";
+	std::string menu = title + hmanagers + managers_to_string() + "\n" + hservers +  servers_to_string(); 
+
+	
+
+
+	Gtk::MessageDialog *dialog = new Gtk::MessageDialog(menu, "List All Employees"); 
+	Gtk::Image *menu_image = new Gtk::Image("");
+	dialog->set_image(*menu_image);
+	menu_image->show(); 
+	dialog->run();
+	dialog->close();
+
+}
+
 void Mainwin::on_about_click() {
     Gtk::AboutDialog dialog{};
     dialog.set_transient_for(*this);
@@ -342,6 +379,35 @@ std::string Mainwin::toppings_to_string(){
 	}
 	return toppings_string;
 } 
+
+std::string Mainwin::customers_to_string(){
+	std::string customers_string = "";
+	for(int i = 0; i < Mainwin::_customers.size(); i++){
+		customers_string += Mainwin::_customers[i].name() + "\n";
+	}
+	return customers_string;
+} 
+
+std::string Mainwin::servers_to_string(){
+	std::string servers_string = "";
+	for(int i = 0; i < Mainwin::_servers.size(); i++){
+		servers_string += Mainwin::_servers[i].name() + "\n";
+	}
+	return servers_string;
+} 
+std::string Mainwin::managers_to_string(){
+	std::string managers_string = "";
+	for(int i = 0; i < Mainwin::_managers.size(); i++){
+		managers_string += Mainwin::_managers[i].name() + "\n";
+	}
+	return managers_string;
+} 
+
+
+
+
+
+
 
 void Mainwin::menu_click() {
 	std::string title = "<span font='14' weight='bold' color='#0077ff'>\nMav's Ice Cream Emporium Menu</span>\n\n";

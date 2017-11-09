@@ -7,6 +7,7 @@
 
 using namespace std;
 
+namespace Mice{
 
 class Server : public Person {
 	public:
@@ -18,6 +19,6 @@ class Server : public Person {
 
 };
 
-
+}
 
 #endif //_SERVER_H

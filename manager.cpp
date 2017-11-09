@@ -1,5 +1,6 @@
 #include "manager.h"
 
+namespace Mice{
 
 static int employee_id = 10000;
 
@@ -30,7 +31,7 @@ void Manager::print_customer(){
 
 //ADD ITEM CONTAINER,SCOOP,TOPPING
 
-
+}
 
 
 

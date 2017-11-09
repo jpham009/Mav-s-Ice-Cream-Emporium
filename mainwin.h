@@ -9,6 +9,9 @@
 #include <string>
 #include "dialogs.h"
 #include "order.h"
+#include "customer.h"
+#include "server.h"
+#include "manager.h"
 
 class Mainwin : public Gtk::Window
 {
@@ -24,19 +27,31 @@ class Mainwin : public Gtk::Window
         void on_about_click();                        // Display About dialog
         void on_quit_click();                         // Exit the program
         void on_load_defaults_click();                    // Load Defaults
-
-		///////////////TODO///////////////
-	
-		//Functions
 		void menu_click();
-
 		std::string containers_to_string();
 		std::string scoops_to_string(); 
 		std::string toppings_to_string(); 
 		Mice::Order create_order();  
 		void status(); 
-		//Variables
 
+		
+		///////////////TODO///////////////
+	
+		//Functions
+		std::string customers_to_string();
+		std::string managers_to_string();
+		std::string servers_to_string();
+
+		void on_list_customers(); 
+		void on_list_employees();
+	
+		void easter_egg(); // load test persons
+
+
+		//Variables
+		std::vector<Mice::Manager> _managers;
+		std::vector<Mice::Server> _servers;
+		std::vector<Mice::Customer> _customers; 
 
 		
 		///////////////TODO///////////////
@@ -56,9 +71,7 @@ class Mainwin : public Gtk::Window
         std::vector<Mice::Container> _containers;     // All defined containers
         std::vector<Mice::Scoop> _scoops;             // All defined scoops
         std::vector<Mice::Topping> _toppings;         // All defined toppings
-        std::vector<Mice::Serving> _servings;         // All defined servings
-
-		
+        std::vector<Mice::Serving> _servings;         // All defined servings		
 
 		Gtk::Image *new_order_image;   
 		Gtk::Image *add_customer_image;
