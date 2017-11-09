@@ -3,10 +3,13 @@
 
 namespace Mice {
 
-Serving::Serving(Container container) : _container{container} { }
+Serving::Serving(Container container) : _container{container} {}
 Container Serving::container() const {return _container;}
 std::vector<Scoop> Serving::scoops() const {return _scoops;}
 std::vector<Topping> Serving::toppings() const {return _toppings;}
+
+Scoop Serving::scoop(int i) {return _scoops[i];}
+Topping Serving::topping(int i) {return _toppings[i];}
 
 void Serving::add_scoop(Scoop scoop) {_scoops.push_back(scoop);}
 void Serving::add_topping(Topping topping) {_toppings.push_back(topping);}

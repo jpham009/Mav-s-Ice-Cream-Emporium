@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <sstream>
+static int order_counter = 1; //order numbers
 
 Mainwin::Mainwin() {
 
@@ -195,8 +196,27 @@ Mainwin::Mainwin() {
     toolbar->append(*money_button);
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+    // S T A T U S   B A R   D I S P L A Y
+    // Provide a status bar for game messages
+    msg = Gtk::manage(new Gtk::Label());
+    msg->set_hexpand(true);
+    vbox->add(*msg);
+
     // Make the box and everything in it visible
     vbox->show_all();
+
+
+
+	////////////////////////TODO////////////////////
+
+
+	//Auto-Load Defaults
+	on_load_defaults_click();
+	
+	//Status bar initialize
+	status();
+
+
 }
 
 Mainwin::~Mainwin() { }
@@ -209,16 +229,29 @@ void Mainwin::on_quit_click() {
     hide();
 }
 
+////////////////////////////////////////////TODO////////////////////////////////////////////
 
 void Mainwin::on_create_order_click() {
-    try {
-        // Create a new serving (NOT an order yet!)
-        Mice::Serving serving = create_serving();
-        _servings.push_back(serving);
-        std::cout << serving << std::endl;  // TODO: Temporary - replace with confirmation dialog
-    } catch(std::runtime_error e) { // User canceled order
-    }
+	try { //OG code
+	Mice::Order order = create_order(); 
+	} 
+	catch(std::runtime_error e) { // User canceled order
+   	}
 }
+
+void Mainwin::status(){
+ // s collects the status message
+    Glib::ustring s = "";
+	
+	s += "";
+		
+// Display the collected status on the status bar
+    msg->set_markup(s);	
+}
+
+
+
+////////////////////////////////////////////TODO////////////////////////////////////////////
 
 void Mainwin::on_load_defaults_click() {
 		
@@ -229,7 +262,7 @@ void Mainwin::on_load_defaults_click() {
         _containers.push_back(
 			Mice::Container{"Cake Cone", "A wafer cone, light and flaky.", 0.25, 0.50, 2});
         _containers.push_back(
-            Mice::Container{"Cup", "Just a basic cup to hold your ice cream in!", 0.35, 0.75, 3});
+            Mice::Container{"Cup", "Just a basic cup to hold your ice cream in!", 0.05, 0.15, 2});
 
         _scoops.push_back(
             Mice::Scoop{"Chocolate", "Rich, creamy chocolate ice cream made with the finest imported Belgium chocolate", 0.20, 0.50});
@@ -259,9 +292,13 @@ void Mainwin::on_load_defaults_click() {
             Mice::Topping{"Sprinkles", "A rainbow of tiny candies on your ice cream", 0.1, 0.2, 0});
 
         // Display acknowledgement
-        Gtk::MessageDialog dialog{*this, "Defaults Loaded!"};
-        dialog.run();
-        dialog.close();
+		std::string load_defaults = "<span font='14' weight='bold' color='#0077ff'>\n\nWelcome to the Mav's Ice Cream Emporium!</span>\n\n<span font='12'>              Your default items have been loaded!</span>";		
+		Gtk::MessageDialog *dialog = new Gtk::MessageDialog(load_defaults, "Default Items Loaded"); 
+		Gtk::Image *default_image = new Gtk::Image("defaults_loaded.png");
+		default_image->show();
+		dialog->set_image(*default_image);
+        dialog->run();
+        dialog->close();
  } 
 
 void Mainwin::on_about_click() {
@@ -281,7 +318,6 @@ void Mainwin::on_about_click() {
     dialog.run();
 }
 
-////////////////////////////////////////////TODO////////////////////////////////////////////
 
 std::string Mainwin::containers_to_string(){
 	std::string containers_string = "";
@@ -308,37 +344,12 @@ std::string Mainwin::toppings_to_string(){
 } 
 
 void Mainwin::menu_click() {
-	std::string title = "<span font='16' weight='bold' color='#0077ff'>\nMav's Ice Cream Emporium Menu</span>\n\n";
+	std::string title = "<span font='14' weight='bold' color='#0077ff'>\nMav's Ice Cream Emporium Menu</span>\n\n";
 	std::string hcontainers = "<span weight='bold' underline='single'>Containers</span>\n";
 	std::string hscoops = "<span weight='bold' underline='single'>Scoops</span>\n";
 	std::string htoppings = "<span weight='bold' underline='single'>Toppings</span>\n";
 	std::string menu = title + hcontainers + containers_to_string() + "\n" + hscoops +  scoops_to_string() + "\n" + htoppings + toppings_to_string() + "\n"; 
 
-	
-
-
-
-
-//R"(
-//<span font='14' weight='bold' color='#007f00'>                     
-//Mav's Ice Cream Emporium Menu</span>
-
-
-//<span weight='bold' underline='single'>Containers</span>
-//(1) Add publication
-//(2) List all publications
-//(3) Check out publication
-//(4) Check in publication
-
-//<span weight='bold' underline='single'>Scoops</span>
-//(5) Add patron
-//(6) List all patrons
-
-//<span weight='bold' underline='single'>Toppings</span>
-//(9) Help
-//(0) Exit
-
-//)" R"(jioasdjfoiasjdfojasdflj)";
 
 	Gtk::MessageDialog *dialog = new Gtk::MessageDialog(menu, "MICE Menu"); 
 	Gtk::Image *menu_image = new Gtk::Image("menu_logo.png");
@@ -347,15 +358,10 @@ void Mainwin::menu_click() {
 	dialog->run();
 	dialog->close();
 
-//  try {
-//    return (result == "CANCEL") ? 0 : stoi(result);
-//  } catch (...) {
-//    std::cout << "error" << std::endl; 
-//  }
 }
 
 
-////////////////////////////////////////////TODO////////////////////////////////////////////
+
 
 
 

@@ -22,7 +22,8 @@ Mice::Serving Mainwin::create_serving() {
         int topping = select_topping();
         if (topping == -1) break;
         else serving.add_topping(_toppings[topping]);
-    }
+	}
+    
 
     return serving;
 }

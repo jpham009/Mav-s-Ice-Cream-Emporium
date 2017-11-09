@@ -47,7 +47,7 @@ int Mainwin::select_from_vector(std::vector<std::string> names, std::string titl
 
     int index = c_index.get_active_row_number();
 
-    dialog_index.close();
+    dialog_index.hide();
 
     return index;
 }

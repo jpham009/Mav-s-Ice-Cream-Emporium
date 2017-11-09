@@ -18,6 +18,8 @@ class Serving {
     std::vector<Topping> toppings() const;
     double cost() const;
     double price() const;
+	Scoop scoop(int i);
+	Topping topping(int i);
   private:
     Container _container;
     std::vector<Scoop> _scoops;
