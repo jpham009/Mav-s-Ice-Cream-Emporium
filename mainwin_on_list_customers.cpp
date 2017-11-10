@@ -6,13 +6,14 @@ void Mainwin::on_list_customers() {
 	std::string menu = title + hcustomers + customers_to_string() + "\n"; 
 
 
-	Gtk::MessageDialog *dialog = new Gtk::MessageDialog(menu, "List All Customers"); 
-	Gtk::Image *menu_image = new Gtk::Image("tinycone.png");	
-	dialog->set_image(*menu_image);
-	menu_image->set_halign(Gtk::ALIGN_START);
-	menu_image->set_valign(Gtk::ALIGN_CENTER);
-	menu_image->show(); 
-	dialog->run();
-	dialog->close();
+	Gtk::MessageDialog dialog(menu, "List All Customers"); 
+	dialog.set_transient_for(*this);
+	Gtk::Image menu_image("tinycone.png");	
+	dialog.set_image(menu_image);
+	menu_image.set_halign(Gtk::ALIGN_START);
+	menu_image.set_valign(Gtk::ALIGN_CENTER);
+	dialog.show_all(); 
+	dialog.run();
+	dialog.close();
 
 }

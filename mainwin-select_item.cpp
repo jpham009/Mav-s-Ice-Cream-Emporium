@@ -24,6 +24,7 @@ int Mainwin::select_from_vector(std::vector<std::string> names, std::string titl
 
     Gtk::Dialog dialog_index{"Select " + title, *this};
     const int WIDTH = 15;
+	dialog_index.set_border_width(15);
 
     // Container
     Gtk::HBox b_index;
@@ -31,6 +32,8 @@ int Mainwin::select_from_vector(std::vector<std::string> names, std::string titl
     Gtk::Label l_index{title + ":"};
     l_index.set_width_chars(WIDTH);
     b_index.pack_start(l_index, Gtk::PACK_SHRINK);
+	b_index.set_border_width(10);
+	b_index.set_margin_bottom(10);
 
     // Create dropdown list
     Gtk::ComboBoxText c_index;

@@ -6,6 +6,10 @@
 static int order_counter = 1; //order numbers
 static int customer_id = 10000; 
 static int employee_id = 20000;
+Person *current_user;
+//if current_user.access() == 1
+//switch 
+
 
 Mainwin::Mainwin() {
 
@@ -14,6 +18,7 @@ Mainwin::Mainwin() {
     // /////////////////
 
     set_default_size(575, 200);
+	set_position(Gtk::WIN_POS_CENTER);
 
     // Put a vertical box container as the Window contents
     Gtk::Box *vbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, 0));
@@ -123,7 +128,7 @@ Mainwin::Mainwin() {
 	Gtk::Image *restock_image = Gtk::manage(new Gtk::Image("restock.png"));
     Gtk::ToolButton *restock_button = Gtk::manage(new Gtk::ToolButton(*restock_image));
     restock_button->set_tooltip_markup("Restock");
-    restock_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_about_click));
+    restock_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_restock_click));
     toolbar3->append(*restock_button);
 
 	
@@ -198,29 +203,48 @@ Mainwin::Mainwin() {
     toolbar->append(*money_button);
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    // S T A T U S   B A R   D I S P L A Y
-    // Provide a status bar for game messages
-    msg = Gtk::manage(new Gtk::Label());
-    msg->set_hexpand(true);
-    vbox->add(*msg);
 
-    // Make the box and everything in it visible
-    vbox->show_all();
 
 
 
 	////////////////////////TODO////////////////////
-
 
 	//Auto-Load Defaults
 	on_load_defaults_click();
 
 	//Easter Egg - Test Persons
 	easter_egg(); 
-	
-	//Status bar initialize
-	status();
 
+	//Status bar initialize
+
+
+//TODO	
+	Mice::Manager *manager = login();
+	name_s = manager->name(); 
+	order_s = std::to_string(100);
+	//status(manager->name());
+
+	
+	    // S T A T U S   B A R   D I S P L A Y
+    // Provide a status bar for game messages
+    name_m = Gtk::manage(new Gtk::Label("Logged in: " + name_s));
+    //msg->set_hexpand(true);
+	order_m = Gtk::manage(new Gtk::Label("Order: " + order_s));
+	order_m->set_alignment(0);
+	order_m->set_margin_left(10);
+	name_m->set_alignment(1);
+	name_m->set_margin_right(10);
+	
+	Gtk::Box *b_status = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, 0));
+    add(*b_status);
+	b_status->pack_start(*order_m, Gtk::PACK_SHRINK);
+    b_status->pack_end(*name_m, Gtk::PACK_SHRINK);
+	b_status->show_all();
+	vbox->pack_start(*b_status);
+
+    // Make the box and everything in it visible
+    vbox->show_all();
+	
 
 }
 
@@ -230,9 +254,95 @@ Mainwin::~Mainwin() { }
 // C A L L B A C K S
 // /////////////////
 
+void Mainwin::status(std::string message){
+// // s collects the status message
+//    Glib::ustring s = "Logged in: ";
+//	
+//	s += message;
+//		
+//// Display the collected status on the status bar
+//    msg->set_markup(s);	
+}
+////////////////////////////////////////////TODO////////////////////////////////////////////
 void Mainwin::on_quit_click() {
     hide();
 }
+
+
+////////////////////////////////////////////TODO////////////////////////////////////////////
+
+Mice::Manager* Mainwin::login() {
+
+
+    Gtk::Dialog dialog{"Login", *this};
+	dialog.set_border_width(15); //borders
+	dialog.set_transient_for(*this);
+    const int WIDTH = 15;
+
+   
+ 	    // Name 
+    Gtk::HBox b_custname;
+    Gtk::Label l_custname{"Username:"};
+    l_custname.set_width_chars(WIDTH);
+    b_custname.pack_start(l_custname, Gtk::PACK_SHRINK);
+
+    Gtk::Entry e_custname;
+    e_custname.set_max_length(WIDTH*4);
+    b_custname.pack_start(e_custname, Gtk::PACK_SHRINK);
+    dialog.get_vbox()->pack_start(b_custname, Gtk::PACK_SHRINK);
+
+
+    // Phone
+    Gtk::HBox b_custphone;
+	b_custphone.set_margin_bottom(15);
+
+    Gtk::Label l_custphone{"Password:"};
+    l_custphone.set_width_chars(WIDTH);
+    b_custphone.pack_start(l_custphone, Gtk::PACK_SHRINK);
+
+    Gtk::Entry e_custphone;
+    e_custphone.set_max_length(WIDTH*4);
+    b_custphone.pack_start(e_custphone, Gtk::PACK_SHRINK);
+    dialog.get_vbox()->pack_start(b_custphone, Gtk::PACK_SHRINK);
+
+    // Show dialog
+    dialog.add_button("Cancel", 0);
+    dialog.add_button("Login", 1);
+    dialog.show_all();
+
+////KILLS YOU
+//	bool valid_data = false;
+//	while(!valid_data) {
+//	if(dialog.run() == 1){
+//		//login
+//		for(int i = 0; i < Mainwin::_managers.size(); i++){
+//			if(l_custname.get_text() == Mainwin::_managers[i].name()){
+//			valid_data = true; 
+//			cout << Mainwin::_managers[i].name() << endl; 
+//			Mice::Manager* manager_user = &_managers[i];
+//			return manager_user;
+//			dialog.close();
+//			}
+//		}
+//	}
+//	else{
+//		dialog.close();
+//		}
+//	}
+
+	return &_managers[0];
+
+}
+
+//		for(int i = 0; i < Mainwin::_servers.size(); i++){
+//			if(l_custname.get_text() == Mainwin::_servers[i].name()){
+//			dialog.close();
+//			 return &Mainwin::_servers[i];
+//			}
+//		}
+
+
+    
 
 ////////////////////////////////////////////TODO////////////////////////////////////////////
 
@@ -244,16 +354,29 @@ void Mainwin::on_create_order_click() {
    	}
 }
 
-void Mainwin::status(){
- // s collects the status message
-    Glib::ustring s = "";
-	
-	s += "";
-		
-// Display the collected status on the status bar
-    msg->set_markup(s);	
-}
+////////////////////////////////////////////TODO////////////////////////////////////////////
 
+void Mainwin::on_restock_click(){
+	Gtk::Dialog dialog{"Restock", *this};
+	Gtk::VBox checkbuttons;
+	checkbuttons.set_halign(Gtk::ALIGN_CENTER);
+	checkbuttons.set_valign(Gtk::ALIGN_CENTER);
+	checkbuttons.set_margin_top(30);
+	checkbuttons.set_margin_bottom(30);
+	checkbuttons.set_spacing(20);
+	dialog.add_button("Cancel", 0);
+	dialog.add_button("OK", 1);
+	Gtk::CheckButton container_checkbutton("Containers");
+	Gtk::CheckButton scoop_checkbutton("Scoops");
+	Gtk::CheckButton topping_checkbutton("Toppings");
+	checkbuttons.pack_start(container_checkbutton);
+	checkbuttons.pack_start(scoop_checkbutton);
+	checkbuttons.pack_start(topping_checkbutton);
+	dialog.get_vbox()->pack_start(checkbuttons);
+	dialog.show_all();
+	dialog.run();
+
+}
 
 ////////////////////////////////////////////TODO////////////////////////////////////////////
 
@@ -262,12 +385,13 @@ void Mainwin::on_add_customer_click() {
 
 
     Gtk::Dialog dialog{"Add Customer", *this};
+	dialog.set_border_width(15); //borders
+	dialog.set_transient_for(*this);
     const int WIDTH = 15;
 
    
  	    // Name 
     Gtk::HBox b_custname;
-
     Gtk::Label l_custname{"Name:"};
     l_custname.set_width_chars(WIDTH);
     b_custname.pack_start(l_custname, Gtk::PACK_SHRINK);
@@ -280,6 +404,7 @@ void Mainwin::on_add_customer_click() {
 
     // Phone
     Gtk::HBox b_custphone;
+	b_custphone.set_margin_bottom(15);
 
     Gtk::Label l_custphone{"Phone:"};
     l_custphone.set_width_chars(WIDTH);
@@ -301,12 +426,14 @@ void Mainwin::on_add_customer_click() {
 		Mice::Customer new_customer(e_custname.get_text(), e_custphone.get_text(), std::to_string(customer_id));
 		_customers.push_back(new_customer);
 		Gtk::MessageDialog mdialog(e_custname.get_text() + "\nCustomer ID: #" + std::to_string(customer_id) + "\nhas been added!");
+		mdialog.set_transient_for(*this);
 		customer_id++; 
 		dialog.hide();
 		mdialog.run();  
 	}
 	else{
 		Gtk::MessageDialog mdialog("Your request has been cancelled!"); 
+		mdialog.set_transient_for(*this);
 		dialog.hide();
 		mdialog.run();  
 	}
@@ -321,6 +448,7 @@ void Mainwin::on_add_server_click() {
 
 
     Gtk::Dialog dialog{"Add Server", *this};
+    dialog.set_transient_for(*this);
     const int WIDTH = 15;
 
    
@@ -376,6 +504,7 @@ void Mainwin::on_add_server_click() {
         if (result != 1) {
             dialog.close();
 			Gtk::MessageDialog mdialog("Your request has been cancelled!"); 
+			mdialog.set_transient_for(*this);
 			dialog.hide();
 			mdialog.run(); 
 			dialog.close();
@@ -394,6 +523,7 @@ void Mainwin::on_add_server_click() {
 		_servers.push_back(new_server);
 
 	Gtk::MessageDialog mdialog(e_name.get_text() + "\nEmployee ID: #" + std::to_string(employee_id) + "\nhas been added!");
+	mdialog.set_transient_for(*this);
 	employee_id++; 
 	dialog.hide();
 	mdialog.run(); 
@@ -443,14 +573,16 @@ void Mainwin::on_load_defaults_click() {
 
         // Display acknowledgement
 		std::string load_defaults = "<span font='14' weight='bold' color='#0077ff'>\n\nWelcome to the Mav's Ice Cream Emporium!</span>\n\n<span font='12'>              Your default items have been loaded!</span>";		
-		Gtk::MessageDialog *dialog = new Gtk::MessageDialog(load_defaults, "Default Items Loaded"); 
-		Gtk::Image *default_image = new Gtk::Image("defaults_loaded.png");
-		default_image->show();
-		dialog->set_image(*default_image);
-		default_image->set_halign(Gtk::ALIGN_START);
-		default_image->set_valign(Gtk::ALIGN_CENTER);
-        dialog->run();
-        dialog->close();
+		Gtk::MessageDialog dialog(load_defaults, "Default Items Loaded"); 
+		dialog.set_transient_for(*this);
+		dialog.set_position(Gtk::WIN_POS_CENTER);
+		Gtk::Image default_image("defaults_loaded.png");		
+		dialog.set_image(default_image);		
+		default_image.set_halign(Gtk::ALIGN_START);
+		default_image.set_valign(Gtk::ALIGN_CENTER);
+		dialog.show_all();
+        dialog.run();
+        dialog.close();
  } 
 
 /////TODO NEW STUFF
@@ -464,17 +596,23 @@ void Mainwin::on_money_click(){
 	std::string s = "Money:\n\nBalance: " + std::to_string(balance()) + "\nMoney in: " + std::to_string(money_in()) + "\nMoney out: " + 	std::to_string(money_out()) + "\nProfit: " + std::to_string(profit()) + "\n";
 	
 	Gtk::Dialog dialog;	
-	dialog.set_default_size(300, 400);
+	dialog.set_size_request(350,300);
+    dialog.set_transient_for(*this);
+	//dialog.set_default_size(300, 400);
 	dialog.set_title("Money");
 	   
  	// money 
     Gtk::VBox b_money;
 
     Gtk::Label l_money{s};
-	l_money.show(); 
-    b_money.pack_start(l_money, Gtk::PACK_SHRINK);
-	dialog.get_vbox()->pack_start(b_money, Gtk::PACK_SHRINK);
-	
+	l_money.set_valign(Gtk::ALIGN_CENTER);
+	l_money.set_halign(Gtk::ALIGN_CENTER);
+	//l_money.set_margin_bottom(30);
+	//l_money.set_margin_top(30);
+	l_money.set_padding(30,30);
+    b_money.pack_start(l_money);
+	dialog.get_vbox()->pack_start(b_money);
+	dialog.add_button("Ok", 1);
 
 	dialog.show_all();
 	dialog.run(); 
@@ -502,14 +640,15 @@ void Mainwin::on_list_employees() {
 	std::string hmanagers = "<span weight='bold' underline='single'>Managers</span>\n";
 	std::string hservers = "<span weight='bold' underline='single'>Servers</span>\n";
 	std::string menu = title + hmanagers + managers_to_string() + "\n" + hservers +  servers_to_string(); 
-	Gtk::MessageDialog *dialog = new Gtk::MessageDialog(menu, "List All Employees"); 
-	Gtk::Image *menu_image = new Gtk::Image("tinycone.png");
-	dialog->set_image(*menu_image);
-	menu_image->set_halign(Gtk::ALIGN_START);
-	menu_image->set_valign(Gtk::ALIGN_CENTER);
-	menu_image->show(); 
-	dialog->run();
-	dialog->close();
+	Gtk::MessageDialog dialog(menu, "List All Employees"); 
+	Gtk::Image menu_image("tinycone.png");
+	dialog.set_image(menu_image);
+    dialog.set_transient_for(*this);
+	menu_image.set_halign(Gtk::ALIGN_START);
+	menu_image.set_valign(Gtk::ALIGN_CENTER);
+	dialog.show_all(); 
+	dialog.run();
+	dialog.close();
 }
 
 void Mainwin::add_new_customer(){
@@ -523,6 +662,7 @@ void Mainwin::add_new_server(){
 	double salary = 11.00;
 	_servers.push_back(Mice::Server{server_name, server_phone, std::to_string(employee_id++), salary});
 }
+
 void Mainwin::add_new_manager(){
 	string manager_name = "George Rice";
 	string manager_phone = "13251325";
@@ -611,14 +751,15 @@ void Mainwin::menu_click() {
 	std::string menu = title + hcontainers + containers_to_string() + "\n" + hscoops +  scoops_to_string() + "\n" + htoppings + toppings_to_string() + "\n"; 
 
 
-	Gtk::MessageDialog *dialog = new Gtk::MessageDialog(menu, "MICE Menu"); 
-	Gtk::Image *menu_image = new Gtk::Image("menu_logo.png");
-	dialog->set_image(*menu_image);
-	menu_image->set_halign(Gtk::ALIGN_START);
-	menu_image->set_valign(Gtk::ALIGN_CENTER);
-	menu_image->show(); 
-	dialog->run();
-	dialog->close();
+	Gtk::MessageDialog dialog(menu, "MICE Menu"); 
+	dialog.set_transient_for(*this);
+	Gtk::Image menu_image("menu_logo.png");
+	dialog.set_image(menu_image);
+	menu_image.set_halign(Gtk::ALIGN_START);
+	menu_image.set_valign(Gtk::ALIGN_CENTER);
+	dialog.show_all();
+	dialog.run();
+	dialog.close();
 
 }
 

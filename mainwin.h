@@ -32,7 +32,7 @@ class Mainwin : public Gtk::Window
 		std::string scoops_to_string(); 
 		std::string toppings_to_string(); 
 		Mice::Order create_order();  
-		void status(); 
+		void status(std::string message); 
 
 
 		
@@ -60,6 +60,14 @@ class Mainwin : public Gtk::Window
 		void on_add_server_click();
 		void on_add_customer_click();
 		void on_money_click(); 
+	
+		void on_restock_click();
+
+		Mice::Manager* login();
+
+
+
+
 
 		//Variables
 		std::vector<Mice::Manager> _managers;
@@ -71,7 +79,10 @@ class Mainwin : public Gtk::Window
 		double _money_out{0};
 		double _profit{0};
 
-		
+	std::string name_s;
+	std::string order_s;
+Gtk::Label *name_m;
+		Gtk::Label *order_m;		
 		///////////////TODO///////////////
     
 
@@ -98,7 +109,7 @@ class Mainwin : public Gtk::Window
 		Gtk::Image *list_customers_image;
 		Gtk::Image *list_servers_image;
 		Gtk::Image *menu_image;
-		Gtk::Label *msg;
+		
 };
 #endif 
 

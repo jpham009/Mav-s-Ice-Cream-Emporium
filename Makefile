@@ -19,7 +19,7 @@ INCLUDE=`/usr/bin/pkg-config gtkmm-3.0 --cflags --libs`
 #executable filename
 EXECUTABLE=mice
 
-all: clean div $(EXECUTABLE)
+all: div $(EXECUTABLE)
 
 #Special symbols used:
 #$^ - is all the dependencies (in this case =$(OBJECTS) )
