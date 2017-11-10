@@ -32,13 +32,24 @@ std::string Order::total(){
 
 std::string Order::to_string(){
 	std::string s = "\n";
+	
 	for(int i = 0; i < _servings.size(); i++){
+		double serving_price = 0;
 		s += "Serving #" + std::to_string(i) + "\n";
 		s = s + "\nContainer: \n" + "\t" + _servings[i].container().name() + "\t$" + to_string_with_precision(_servings[i].container().price()) + "\n"; 
+		serving_price += _servings[i].container().price();
 		s += "Scoops: \n";
-		for (Scoop scoop : _servings[i].scoops()) s = s + "\t"+ scoop.name() + "\t$" + to_string_with_precision(scoop.price()) + "\n"; 
+		for (Scoop scoop : _servings[i].scoops()) {
+			s = s + "\t"+ scoop.name() + "\t$" + to_string_with_precision(scoop.price()) + "\n"; 
+		serving_price += scoop.price();
+		}
 		s += "Toppings: \n";
-		for (Topping topping : _servings[i].toppings()) s = s + "\t" + topping.name() + "\t$" + to_string_with_precision(topping.price()) + "\n"; 
+		for (Topping topping : _servings[i].toppings()){
+			 s = s + "\t" + topping.name() + "\t$" + to_string_with_precision(topping.price()) + "\n"; 
+		serving_price += topping.price(); 	
+		}
+		
+		s += "\t\tServing price: $" + to_string_with_precision(serving_price) + "\n\n";
 	}
 
 		s+= "\n\nYour total is: " + to_string_with_precision(total()) + "\n\n"; 

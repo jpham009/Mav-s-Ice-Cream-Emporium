@@ -36,7 +36,7 @@ Mainwin::Mainwin() {
     //         N E W   E M P O R I U M
     // (Owner) “Create a New Emporium” Append New to the File menu
     Gtk::MenuItem *menuitem_new = Gtk::manage(new Gtk::MenuItem("_New Emporium", true));
-    //menuitem_new->signal_activate().connect(sigc::mem_fun(*this, &Mainwin::on_new_game_click));
+    menuitem_new->signal_activate().connect(sigc::mem_fun(*this, &Mainwin::on_about_click));
     filemenu->append(*menuitem_new);
 
     //         L O A D   D E F A U L T S 
@@ -68,7 +68,7 @@ Mainwin::Mainwin() {
     //         C U S T O M E R
     // (Server, Manager, Owner) “Create a New Customer” Append Customer to the Create menu
     Gtk::MenuItem *menuitem_customer = Gtk::manage(new Gtk::MenuItem("_Add New Customer", true));
-    //menuitem_customer->signal_activate().connect(sigc::mem_fun(*this, &Mainwin::on_create_customer_click));
+    menuitem_customer->signal_activate().connect(sigc::mem_fun(*this, &Mainwin::on_add_customer_click));
     createmenu->append(*menuitem_customer);
 
     //         I T E M 
@@ -141,14 +141,14 @@ Mainwin::Mainwin() {
     add_customer_image = Gtk::manage(new Gtk::Image("add_customer.png"));
     Gtk::ToolButton *add_customer_button = Gtk::manage(new Gtk::ToolButton(*add_customer_image));
     add_customer_button->set_tooltip_markup("Add Customer");
-    add_customer_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_quit_click));
+    add_customer_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_add_customer_click));
     toolbar2->append(*add_customer_button);
 
 	// 	A D D  S E R V E R 
     add_server_image = Gtk::manage(new Gtk::Image("add_server.png"));
     Gtk::ToolButton *add_server_button = Gtk::manage(new Gtk::ToolButton(*add_server_image));
     add_server_button->set_tooltip_markup("Add Server");
-    add_server_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_quit_click));
+    add_server_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_add_server_click));
     toolbar2->append(*add_server_button);
 
 	// 	L I S T  A L L  C U S T O M E R S
@@ -178,7 +178,7 @@ Mainwin::Mainwin() {
 	Gtk::Image *new_emporium_image = Gtk::manage(new Gtk::Image("new_emporium.png"));
     Gtk::ToolButton *new_emporium_button = Gtk::manage(new Gtk::ToolButton(*new_emporium_image));
     new_emporium_button->set_tooltip_markup("Create a New Emporium");
-    //new_emporium_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_new_emporium_click));
+    new_emporium_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_about_click));
     toolbar->append(*new_emporium_button);
 
 
@@ -194,7 +194,7 @@ Mainwin::Mainwin() {
     money_image = Gtk::manage(new Gtk::Image("money.png"));
     Gtk::ToolButton *money_button = Gtk::manage(new Gtk::ToolButton(*money_image));
     money_button->set_tooltip_markup("$$$");
-    money_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_about_click));
+    money_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_money_click));
     toolbar->append(*money_button);
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -255,6 +255,151 @@ void Mainwin::status(){
 }
 
 
+////////////////////////////////////////////TODO////////////////////////////////////////////
+
+
+void Mainwin::on_add_customer_click() {
+
+
+    Gtk::Dialog dialog{"Add Customer", *this};
+    const int WIDTH = 15;
+
+   
+ 	    // Name 
+    Gtk::HBox b_custname;
+
+    Gtk::Label l_custname{"Name:"};
+    l_custname.set_width_chars(WIDTH);
+    b_custname.pack_start(l_custname, Gtk::PACK_SHRINK);
+
+    Gtk::Entry e_custname;
+    e_custname.set_max_length(WIDTH*4);
+    b_custname.pack_start(e_custname, Gtk::PACK_SHRINK);
+    dialog.get_vbox()->pack_start(b_custname, Gtk::PACK_SHRINK);
+
+
+    // Phone
+    Gtk::HBox b_custphone;
+
+    Gtk::Label l_custphone{"Phone:"};
+    l_custphone.set_width_chars(WIDTH);
+    b_custphone.pack_start(l_custphone, Gtk::PACK_SHRINK);
+
+    Gtk::Entry e_custphone;
+    e_custphone.set_max_length(WIDTH*4);
+    b_custphone.pack_start(e_custphone, Gtk::PACK_SHRINK);
+    dialog.get_vbox()->pack_start(b_custphone, Gtk::PACK_SHRINK);
+
+    // Show dialog
+    dialog.add_button("Cancel", 0);
+    dialog.add_button("OK", 1);
+    dialog.show_all();
+
+	int result = dialog.run();
+	if(result == 1){ 
+		// Instance item
+		Mice::Customer new_customer(e_custname.get_text(), e_custphone.get_text(), std::to_string(customer_id));
+		_customers.push_back(new_customer);
+		Gtk::MessageDialog mdialog(e_custname.get_text() + "\nCustomer ID: #" + std::to_string(customer_id) + "\nhas been added!");
+		customer_id++; 
+		dialog.hide();
+		mdialog.run();  
+	}
+	else{
+		Gtk::MessageDialog mdialog("Your request has been cancelled!"); 
+		dialog.hide();
+		mdialog.run();  
+	}
+ 		dialog.close();
+}
+
+////////////////////////////////////////////TODO////////////////////////////////////////////
+////////////////////////////////////////////TODO////////////////////////////////////////////
+
+
+void Mainwin::on_add_server_click() {
+
+
+    Gtk::Dialog dialog{"Add Server", *this};
+    const int WIDTH = 15;
+
+   
+ 	    // Name 
+    Gtk::HBox b_name;
+
+    Gtk::Label l_name{"Name:"};
+    l_name.set_width_chars(WIDTH);
+    b_name.pack_start(l_name, Gtk::PACK_SHRINK);
+
+    Gtk::Entry e_name;
+    e_name.set_max_length(WIDTH*4);
+    b_name.pack_start(e_name, Gtk::PACK_SHRINK);
+    dialog.get_vbox()->pack_start(b_name, Gtk::PACK_SHRINK);
+
+
+    // Phone
+    Gtk::HBox b_phone;
+
+    Gtk::Label l_phone{"Phone:"};
+    l_phone.set_width_chars(WIDTH);
+    b_phone.pack_start(l_phone, Gtk::PACK_SHRINK);
+
+    Gtk::Entry e_phone;
+    e_phone.set_max_length(WIDTH*4);
+    b_phone.pack_start(e_phone, Gtk::PACK_SHRINK);
+    dialog.get_vbox()->pack_start(b_phone, Gtk::PACK_SHRINK);
+
+    // Salary
+    Gtk::HBox b_salary;
+
+    Gtk::Label l_salary{"Salary:"};
+    l_salary.set_width_chars(WIDTH);
+    b_salary.pack_start(l_salary, Gtk::PACK_SHRINK);
+
+    Gtk::Entry e_salary;
+    e_salary.set_max_length(WIDTH*4);
+    b_salary.pack_start(e_salary, Gtk::PACK_SHRINK);
+    dialog.get_vbox()->pack_start(b_salary, Gtk::PACK_SHRINK);
+
+
+    // Show dialog
+    dialog.add_button("Cancel", 0);
+    dialog.add_button("OK", 1);
+    dialog.show_all();
+
+    bool valid_data = false;
+    double d_salary;
+
+
+    while(!valid_data) {
+		int result = dialog.run();
+        if (result != 1) {
+            dialog.close();
+			Gtk::MessageDialog mdialog("Your request has been cancelled!"); 
+			dialog.hide();
+			mdialog.run(); 
+			dialog.close();
+            return;
+        }
+
+        valid_data = true;
+        try {
+            d_salary = std::stod(e_salary.get_text());
+        } catch(std::exception e) {
+            e_salary.set_text("*** invalid salary ***");
+            valid_data = false;
+        }
+    }
+	Mice::Server new_server(e_name.get_text(), e_phone.get_text(), std::to_string(employee_id), d_salary);
+		_servers.push_back(new_server);
+
+	Gtk::MessageDialog mdialog(e_name.get_text() + "\nEmployee ID: #" + std::to_string(employee_id) + "\nhas been added!");
+	employee_id++; 
+	dialog.hide();
+	mdialog.run(); 
+	dialog.close();
+	return;
+}
 
 ////////////////////////////////////////////TODO////////////////////////////////////////////
 
@@ -302,22 +447,54 @@ void Mainwin::on_load_defaults_click() {
 		Gtk::Image *default_image = new Gtk::Image("defaults_loaded.png");
 		default_image->show();
 		dialog->set_image(*default_image);
+		default_image->set_halign(Gtk::ALIGN_START);
+		default_image->set_valign(Gtk::ALIGN_CENTER);
         dialog->run();
         dialog->close();
  } 
+
+/////TODO NEW STUFF
+
+		double Mainwin::balance(){return _balance;}
+		double Mainwin::money_in(){return _money_in;}
+		double Mainwin::money_out(){return _money_out;}
+		double Mainwin::profit(){return _profit;}
+
+void Mainwin::on_money_click(){
+	std::string s = "Money:\n\nBalance: " + std::to_string(balance()) + "\nMoney in: " + std::to_string(money_in()) + "\nMoney out: " + 	std::to_string(money_out()) + "\nProfit: " + std::to_string(profit()) + "\n";
+	
+	Gtk::Dialog dialog;	
+	dialog.set_default_size(300, 400);
+	dialog.set_title("Money");
+	   
+ 	// money 
+    Gtk::VBox b_money;
+
+    Gtk::Label l_money{s};
+	l_money.show(); 
+    b_money.pack_start(l_money, Gtk::PACK_SHRINK);
+	dialog.get_vbox()->pack_start(b_money, Gtk::PACK_SHRINK);
+	
+
+	dialog.show_all();
+	dialog.run(); 
+	dialog.close(); 
+
+}
+
+// Server expenses
+// Supply expenses
+// 
 
 
 void Mainwin::easter_egg(){
 	_customers.push_back(Mice::Customer{"Cheryl Dyer", "8178902356", std::to_string(customer_id++)});
 	_customers.push_back(Mice::Customer{"Daniel Fagan", "8178809444", std::to_string(customer_id++)});
 	_customers.push_back(Mice::Customer{"Michael Fagan", "8178912365", std::to_string(customer_id++)});
-
 	_servers.push_back(Mice::Server{"Michelle Pham", "6825590111", std::to_string(employee_id++), 12.50});
 	_servers.push_back(Mice::Server{"Russell Pham", "6824914447", std::to_string(employee_id++), 11.50});
 	_servers.push_back(Mice::Server{"Connor Pham", "6825932036", std::to_string(employee_id++), 11.75});
-
 	_managers.push_back(Mice::Manager{"Johnny Pham", "6825590692", std::to_string(employee_id++), 19.50});	
-
 }
 
 void Mainwin::on_list_employees() {
@@ -325,18 +502,35 @@ void Mainwin::on_list_employees() {
 	std::string hmanagers = "<span weight='bold' underline='single'>Managers</span>\n";
 	std::string hservers = "<span weight='bold' underline='single'>Servers</span>\n";
 	std::string menu = title + hmanagers + managers_to_string() + "\n" + hservers +  servers_to_string(); 
-
-	
-
-
 	Gtk::MessageDialog *dialog = new Gtk::MessageDialog(menu, "List All Employees"); 
-	Gtk::Image *menu_image = new Gtk::Image("");
+	Gtk::Image *menu_image = new Gtk::Image("tinycone.png");
 	dialog->set_image(*menu_image);
+	menu_image->set_halign(Gtk::ALIGN_START);
+	menu_image->set_valign(Gtk::ALIGN_CENTER);
 	menu_image->show(); 
 	dialog->run();
 	dialog->close();
-
 }
+
+void Mainwin::add_new_customer(){
+	string customer_name = "New Customer";
+	string customer_phone = "87878741";
+	_customers.push_back(Mice::Customer{customer_name, customer_phone, std::to_string(customer_id++)});
+}	
+void Mainwin::add_new_server(){
+	string server_name = "John Doe";
+	string server_phone = "682682682";
+	double salary = 11.00;
+	_servers.push_back(Mice::Server{server_name, server_phone, std::to_string(employee_id++), salary});
+}
+void Mainwin::add_new_manager(){
+	string manager_name = "George Rice";
+	string manager_phone = "13251325";
+	double salary = 23.40;
+	_managers.push_back(Mice::Manager{manager_name, manager_phone, std::to_string(customer_id++), salary});
+	
+} 
+
 
 void Mainwin::on_about_click() {
     Gtk::AboutDialog dialog{};
@@ -420,6 +614,8 @@ void Mainwin::menu_click() {
 	Gtk::MessageDialog *dialog = new Gtk::MessageDialog(menu, "MICE Menu"); 
 	Gtk::Image *menu_image = new Gtk::Image("menu_logo.png");
 	dialog->set_image(*menu_image);
+	menu_image->set_halign(Gtk::ALIGN_START);
+	menu_image->set_valign(Gtk::ALIGN_CENTER);
 	menu_image->show(); 
 	dialog->run();
 	dialog->close();

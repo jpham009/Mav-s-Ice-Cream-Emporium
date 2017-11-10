@@ -34,6 +34,7 @@ class Mainwin : public Gtk::Window
 		Mice::Order create_order();  
 		void status(); 
 
+
 		
 		///////////////TODO///////////////
 	
@@ -47,11 +48,28 @@ class Mainwin : public Gtk::Window
 	
 		void easter_egg(); // load test persons
 
+		void add_new_customer();	
+		void add_new_server();
+		void add_new_manager(); 
+
+		double balance();
+		double money_in();
+		double money_out();
+		double profit();
+
+		void on_add_server_click();
+		void on_add_customer_click();
+		void on_money_click(); 
 
 		//Variables
 		std::vector<Mice::Manager> _managers;
 		std::vector<Mice::Server> _servers;
 		std::vector<Mice::Customer> _customers; 
+
+		double _balance{0};
+		double _money_in{0};
+		double _money_out{0};
+		double _profit{0};
 
 		
 		///////////////TODO///////////////

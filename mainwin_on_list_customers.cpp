@@ -7,8 +7,10 @@ void Mainwin::on_list_customers() {
 
 
 	Gtk::MessageDialog *dialog = new Gtk::MessageDialog(menu, "List All Customers"); 
-	Gtk::Image *menu_image = new Gtk::Image("");
+	Gtk::Image *menu_image = new Gtk::Image("tinycone.png");	
 	dialog->set_image(*menu_image);
+	menu_image->set_halign(Gtk::ALIGN_START);
+	menu_image->set_valign(Gtk::ALIGN_CENTER);
 	menu_image->show(); 
 	dialog->run();
 	dialog->close();
