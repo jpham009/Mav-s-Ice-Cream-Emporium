@@ -48,13 +48,16 @@ Mice::Order Mainwin::create_order() {
 		spin_box.set_margin_bottom(30);
 		dialog.get_vbox()->pack_start(spin_box);
 
-
+		//Cancel dialog
+		Gtk::MessageDialog mdialog("Your request has been cancelled!"); 
+		
 		// Show dialog
 		dialog.add_button("Cancel", 0);
 		dialog.add_button("OK", 1);
 		dialog.set_transient_for(*this);
 		dialog.show_all();
-		dialog.run();
+		dialog.run(); 
+	
 		//int num_of_servings = std::stoi(e_name.get_text());
 		int num_of_servings = (int)spin.get_value();		
 		dialog.hide();
@@ -64,6 +67,7 @@ Mice::Order Mainwin::create_order() {
 		if (num_of_servings == -1 || num_of_servings > 10) throw std::runtime_error("Canceled");
 
 		Mice::Order order{num_of_servings};
+		
 		
 	//vector of servings 
 		for(int i = 0; i < num_of_servings; i++){
@@ -111,7 +115,7 @@ Gtk::Dialog dialog3;
 
 		b_checkout.set_border_width(25);
 		b_checkout.set_margin_bottom(15);
-		std::string total_string = "Your total is $" + order.total();
+		std::string total_string = "Your total is $" + order.total_price_string();
 		Gtk::Label l_checkout{total_string};
 		b_checkout.pack_start(l_checkout);
 		//dialog2.get_vbox()->pack_start(b_checkout, Gtk::PACK_SHRINK);
@@ -127,14 +131,12 @@ Gtk::Dialog dialog3;
 		dialog3.set_transient_for(*this);
 		dialog3.show_all();
 		dialog3.run();
-		
 		dialog3.hide();
 ///////////////////////////////////////////////////////////////////
 Gtk::Dialog dialog4;
 		dialog4.set_title("Payment Approved");
 		dialog4.set_border_width(15);
 		
-		// 
 		Gtk::VBox b_payment;
 
 		b_payment.set_border_width(30);
@@ -142,24 +144,13 @@ Gtk::Dialog dialog4;
 		std::string thankyou_string = "Thank you for your purchase!\n\n You are order number #" + std::to_string(order.order_number());
 		Gtk::Label l_payment{thankyou_string};
 		b_payment.pack_start(l_payment);
-		//dialog2.get_vbox()->pack_start(b_checkout, Gtk::PACK_SHRINK);
-		
-		//
 		b_payment.pack_start(l_payment);
 		dialog4.get_vbox()->pack_start(b_payment);
 		dialog4.add_button("Ok", 1);
-
-	
-		// Show dialog
-		dialog4.set_transient_for(*this);
 		dialog4.show_all();
 		dialog4.run();
-		
 		dialog4.hide();
 		
-
-		 
-
 		return order; 
 
 }

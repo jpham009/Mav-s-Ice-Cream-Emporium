@@ -16,12 +16,14 @@ class Item {
     double cost() const;
     double price() const;
     int quantity() const;
+	int max_quantity() const;
   private:
     std::string _name;
     std::string _description;
     double _cost;
     double _price;
     int _quantity;
+	int _max_quantity;
     // Gtk::Image _photo;
 };
 

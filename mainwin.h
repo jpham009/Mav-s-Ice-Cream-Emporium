@@ -64,17 +64,24 @@ class Mainwin : public Gtk::Window
 		void on_restock_click();
 
 		Mice::Manager* login();
+		void order_filled(Mice::Order order);
+		void restock();
 
 
 
 
 
 		//Variables
+		std::vector<Mice::Order> _orders;
 		std::vector<Mice::Manager> _managers;
 		std::vector<Mice::Server> _servers;
 		std::vector<Mice::Customer> _customers; 
+		
+		std::vector<int> _scoop_selection;
+		std::vector<int> _container_selection;
+		std::vector<int> _topping_selection;
 
-		double _balance{0};
+		double _balance{1000};
 		double _money_in{0};
 		double _money_out{0};
 		double _profit{0};

@@ -5,7 +5,7 @@
 namespace Mice {
 
 Item::Item(std::string name, std::string description, double cost, double price)
-     : _name{name}, _description{description}, _cost{cost}, _price{price}, _quantity{0} { }
+     : _name{name}, _description{description}, _cost{cost}, _price{price}, _quantity{25}, _max_quantity{25}{ }
 std::string Item::type() const {return "Item";}
 void Item::restock(int quantity) {_quantity  = quantity;}
 void Item::consume(int quantity) {_quantity -= quantity;}
@@ -14,6 +14,7 @@ std::string Item::description() const {return _description;}
 double Item::cost() const {return _cost;}
 double Item::price() const {return _price;}
 int Item::quantity() const {return _quantity;}
+int Item::max_quantity() const{return _max_quantity;}
 // Gtk::Image photo() {return _photo;}
 }
 

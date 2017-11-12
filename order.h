@@ -15,12 +15,16 @@ class Order {
 	public:
 	Order(int num_of_servings);
 	//void print_order();
-	std::string total();
+	void total();
 	void add_serving(Serving serving); 
 	std::string to_string();
 	///////////////TODO///////////////
-	std::vector<Serving> servings() const; 
+	std::vector<Serving> servings(); 
 	int order_number(); 
+	double total_price();
+	std::string total_price_string();
+	
+	
 	///////////////TODO///////////////
 	private:
 	std::vector<Serving> _servings;	

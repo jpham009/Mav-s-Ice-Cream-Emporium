@@ -3,6 +3,8 @@
 #include <stdexcept>
 #include <iostream>
 #include <sstream>
+#include <iomanip>
+
 static int order_counter = 1; //order numbers
 static int customer_id = 10000; 
 static int employee_id = 20000;
@@ -10,6 +12,13 @@ Person *current_user;
 //if current_user.access() == 1
 //switch 
 
+template <typename T>
+std::string to_string_with_precision(const T a_value, const int n = 2)
+{
+    std::ostringstream out;
+    out << std::fixed << std::setprecision(n) << a_value;
+    return out.str();
+}
 
 Mainwin::Mainwin() {
 
@@ -220,10 +229,11 @@ Mainwin::Mainwin() {
 
 //TODO	
 	Mice::Manager *manager = login();
-	name_s = manager->name(); 
-	order_s = std::to_string(100);
+	name_s = manager->name();
+	manager->order_up();
+	order_s = std::to_string(manager->get_orders());
+	
 	//status(manager->name());
-
 	
 	    // S T A T U S   B A R   D I S P L A Y
     // Provide a status bar for game messages
@@ -270,6 +280,38 @@ void Mainwin::on_quit_click() {
 
 
 ////////////////////////////////////////////TODO////////////////////////////////////////////
+
+void Mainwin::order_filled(Mice::Order order){
+	_money_in += order.total_price(); 
+	_balance += _money_in; 
+
+
+	for(int i = 0; i < _container_selection.size(); i++){
+		_containers[i].consume(); 
+	}
+	for(int i = 0; i < _scoop_selection.size(); i++){
+		_scoops[i].consume(); 
+	}
+	for(int i = 0; i < _topping_selection.size(); i++){
+		_toppings[i].consume(); 
+	}
+	
+
+	std::string s = "";
+	for(Mice::Container container : _containers) s = s + "Item:" + container.name() + " Qty:" + std::to_string(container.quantity()) + "\n";
+	for(Mice::Scoop scoop : _scoops) s = s + "Item:" + scoop.name() + " Qty:" + std::to_string(scoop.quantity()) + "\n";
+	for(Mice::Topping topping : _toppings) s = s + "Item:" + topping.name() + " Qty:" + std::to_string(topping.quantity()) + "\n";
+	
+	s = s + "Money in the bank: " + to_string_with_precision(_balance);
+	
+
+	Gtk::MessageDialog mdialog(s);
+	mdialog.run(); 
+	mdialog.close(); 
+
+	////TODO
+	
+}
 
 Mice::Manager* Mainwin::login() {
 
@@ -346,9 +388,12 @@ Mice::Manager* Mainwin::login() {
 
 ////////////////////////////////////////////TODO////////////////////////////////////////////
 
-void Mainwin::on_create_order_click() {
-	try { //OG code
-	Mice::Order order = create_order(); 
+void Mainwin::on_create_order_click(){
+	try { //OG code 
+	Mice::Order order = create_order();
+	order_filled(order);
+	_orders.push_back(order);
+
 	} 
 	catch(std::runtime_error e) { // User canceled order
    	}
@@ -357,26 +402,140 @@ void Mainwin::on_create_order_click() {
 ////////////////////////////////////////////TODO////////////////////////////////////////////
 
 void Mainwin::on_restock_click(){
-	Gtk::Dialog dialog{"Restock", *this};
-	Gtk::VBox checkbuttons;
-	checkbuttons.set_halign(Gtk::ALIGN_CENTER);
-	checkbuttons.set_valign(Gtk::ALIGN_CENTER);
-	checkbuttons.set_margin_top(30);
-	checkbuttons.set_margin_bottom(30);
-	checkbuttons.set_spacing(20);
+	Gtk::Dialog dialog("Restock");
+	dialog.set_border_width(30);
+	
+	Gtk::HBox hb_all;
+	Gtk::VBox vb_containers;
+	Gtk::VBox vb_scoops;
+	Gtk::VBox vb_toppings;
+	
+
+	Gtk::Label l_container;
+	l_container.set_markup("<span font='18' underline='single'> Containers </span>");
+	l_container.set_padding(0, 25);
+	vb_containers.pack_start(l_container, Gtk::PACK_SHRINK);
+	for(Mice::Container container : _containers){
+		Gtk::Grid *grid_container = Gtk::manage(new Gtk::Grid());
+		Gtk::Label *name_container = Gtk::manage(new Gtk::Label(container.name()));
+		Gtk::Label *quantity_container = Gtk::manage(new Gtk::Label());
+		if(container.quantity() == 0){
+		ostringstream ss_container;
+		ss_container << "<span color='red' weight='bold'>Quantity: [ " << std::to_string(container.quantity()) << " ]</span>";
+		std::string ss_container2 = ss_container.str();	
+		
+		quantity_container->set_markup(ss_container2);
+		}
+		else{
+			quantity_container->set_text("Quantity: [ " + std::to_string(container.quantity()) + " ]");		
+		}
+
+		name_container->set_alignment(0,0.5);		
+		grid_container->add(*name_container);
+		grid_container->add(*quantity_container);
+		grid_container->set_column_homogeneous(true);
+		vb_containers.pack_start(*grid_container, Gtk::PACK_SHRINK);
+	}	
+	
+	Gtk::Label l_scoop;
+	l_scoop.set_markup("<span font='18' underline='single'> Scoops </span>");
+	l_scoop.set_padding(0, 25);
+	vb_scoops.pack_start(l_scoop, Gtk::PACK_SHRINK);
+	for(Mice::Scoop scoop : _scoops){
+		Gtk::Grid *grid_scoop = Gtk::manage(new Gtk::Grid());
+		Gtk::Label *name_scoop = Gtk::manage(new Gtk::Label(scoop.name()));
+		Gtk::Label *quantity_scoop = Gtk::manage(new Gtk::Label());
+		if(scoop.quantity() == 0){
+		ostringstream ss_scoop;
+		ss_scoop << "<span color='red' weight='bold'>Quantity: [ " << std::to_string(scoop.quantity()) << " ]</span>";
+		std::string ss_scoop2 = ss_scoop.str();	
+		
+		quantity_scoop->set_markup(ss_scoop2);
+		}
+		else{
+			quantity_scoop->set_text("Quantity: [ " + std::to_string(scoop.quantity()) + " ]");		
+		}
+
+		grid_scoop->set_column_homogeneous(true);
+		name_scoop->set_alignment(0,0.5);		
+		grid_scoop->add(*name_scoop);
+		grid_scoop->add(*quantity_scoop);
+		vb_scoops.pack_start(*grid_scoop, Gtk::PACK_SHRINK);
+	}	
+
+	Gtk::Label l_topping;
+	l_topping.set_markup("<span font='18' underline='single'> Toppings </span>");
+	l_topping.set_padding(0, 25);
+	vb_toppings.pack_start(l_topping, Gtk::PACK_SHRINK);
+	for(Mice::Topping topping : _toppings){
+		Gtk::Grid *grid_topping = Gtk::manage(new Gtk::Grid());
+		Gtk::Label *name_topping = Gtk::manage(new Gtk::Label(topping.name()));
+		Gtk::Label *quantity_topping = Gtk::manage(new Gtk::Label());
+
+		if(topping.quantity() == 0){
+		ostringstream ss_top;
+		ss_top << "<span color='red' weight='bold'>Quantity: [ " << std::to_string(topping.quantity()) << " ]</span>";
+		std::string ss_top2 = ss_top.str();	
+		
+		quantity_topping->set_markup(ss_top2);
+		}
+		else{
+			quantity_topping->set_text("Quantity: [ " + std::to_string(topping.quantity()) + " ]");		
+		}
+
+		
+		grid_topping->set_column_homogeneous(true);
+		name_topping->set_alignment(0,0.5);		
+		grid_topping->add(*name_topping);
+		grid_topping->add(*quantity_topping);
+		vb_toppings.pack_start(*grid_topping, Gtk::PACK_SHRINK);
+	}	
+
+	
+	hb_all.pack_start(vb_containers);
+	hb_all.pack_start(vb_scoops);
+	hb_all.pack_start(vb_toppings);
+	hb_all.set_homogeneous(true);
+	hb_all.set_spacing(35);
+	hb_all.set_margin_bottom(30);
+	
+	dialog.get_vbox()->pack_start(hb_all);
 	dialog.add_button("Cancel", 0);
-	dialog.add_button("OK", 1);
-	Gtk::CheckButton container_checkbutton("Containers");
-	Gtk::CheckButton scoop_checkbutton("Scoops");
-	Gtk::CheckButton topping_checkbutton("Toppings");
-	checkbuttons.pack_start(container_checkbutton);
-	checkbuttons.pack_start(scoop_checkbutton);
-	checkbuttons.pack_start(topping_checkbutton);
-	dialog.get_vbox()->pack_start(checkbuttons);
+	dialog.add_button("Restock", 1);
+	dialog.set_transient_for(*this);
 	dialog.show_all();
-	dialog.run();
+	int result = dialog.run();
+	if(result == 1){
+		restock();
+	}
+
+	dialog.close();
+
+	return;
 
 }
+
+
+void Mainwin::restock(){
+	double restock_cost = 0;
+	for(Mice::Container container : _containers){
+		restock_cost += (container.max_quantity()-container.quantity())*container.cost(); 
+	}
+	for(Mice::Scoop scoop : _scoops){
+		restock_cost += (scoop.max_quantity()-scoop.quantity())*scoop.cost(); 
+	}
+	for(Mice::Topping topping : _toppings){
+		restock_cost += (topping.max_quantity()-topping.quantity())*topping.cost(); 
+	}
+	_balance -= restock_cost;
+		
+	std::string s = "Your balance is: $" + to_string_with_precision(_balance);
+	Gtk::MessageDialog dialog(s);
+	dialog.run(); 
+	dialog.close();
+	return;
+}
+
 
 ////////////////////////////////////////////TODO////////////////////////////////////////////
 
@@ -593,7 +752,7 @@ void Mainwin::on_load_defaults_click() {
 		double Mainwin::profit(){return _profit;}
 
 void Mainwin::on_money_click(){
-	std::string s = "Money:\n\nBalance: " + std::to_string(balance()) + "\nMoney in: " + std::to_string(money_in()) + "\nMoney out: " + 	std::to_string(money_out()) + "\nProfit: " + std::to_string(profit()) + "\n";
+	std::string s = "Money:\n\nBalance: " + to_string_with_precision(balance()) + "\nMoney in: " + to_string_with_precision(money_in()) + "\nMoney out: " + 	to_string_with_precision(money_out()) + "\nProfit: " + to_string_with_precision(profit()) + "\n";
 	
 	Gtk::Dialog dialog;	
 	dialog.set_size_request(350,300);

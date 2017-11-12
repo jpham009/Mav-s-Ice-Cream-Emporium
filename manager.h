@@ -24,6 +24,7 @@ class Manager : public Person {
 	//set
 	void set_salary(double);
 
+	void order_up();
 	//get
 	double get_salary();
 	int get_orders();

@@ -26,6 +26,10 @@ void Manager::print_customer(){
 	}
 }
 
+void Manager::order_up(){
+	++orders;
+}
+
 //// CUSTOMER Get FUNCTIONS
 ////TODO///////////
 

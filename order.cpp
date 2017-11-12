@@ -19,16 +19,20 @@ void Order::add_serving(Serving serving){
 	_servings.push_back(serving);
 }
 
-std::vector<Serving> Order::servings() const {return _servings;}
-
-std::string Order::total(){
+std::vector<Serving> Order::servings() {return _servings;}
+double Order::total_price(){ return _total_price;}
+std::string Order::total_price_string(){return to_string_with_precision(_total_price);}
+void Order::total(){ 
 	for(int i = 0; i < _servings.size(); i++){
 		_total_price += _servings[i].container().price();
 	for (Scoop scoop : _servings[i].scoops()) _total_price += scoop.price();
 	for (Topping topping : _servings[i].toppings()) _total_price += topping.price();
 	}
-	return to_string_with_precision(_total_price);
+	return;
 }
+
+
+
 
 std::string Order::to_string(){
 	std::string s = "\n";
@@ -52,7 +56,8 @@ std::string Order::to_string(){
 		s += "\t\tServing price: $" + to_string_with_precision(serving_price) + "\n\n";
 	}
 
-		s+= "\n\nYour total is: " + to_string_with_precision(total()) + "\n\n"; 
+		Order::total();
+		s+= "\n\nYour total is: " + total_price_string() + "\n\n"; 
 
 	return s;
 }
@@ -60,6 +65,7 @@ std::string Order::to_string(){
 int Order::order_number(){
 	return _order_number++;
 }
+
 
 
 

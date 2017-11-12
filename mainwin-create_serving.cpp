@@ -8,12 +8,14 @@ Mice::Serving Mainwin::create_serving() {
     if (container == -1) throw std::runtime_error("Canceled");
 
     Mice::Serving serving{_containers[container]};
+	_container_selection.push_back(container); 
 
     bool has_no_scoops = true;
     for (int i=0; i<_containers[container].max_scoops(); ++i) {
         int scoop = select_scoop();
         if (scoop == -1) break;
         serving.add_scoop(_scoops[scoop]);
+		_scoop_selection.push_back(scoop);
         has_no_scoops = false;
     }
     if (has_no_scoops) throw std::runtime_error("Canceled");
@@ -21,7 +23,7 @@ Mice::Serving Mainwin::create_serving() {
     while (true) {
         int topping = select_topping();
         if (topping == -1) break;
-        else serving.add_topping(_toppings[topping]);
+        else serving.add_topping(_toppings[topping]); _topping_selection.push_back(topping);
 	}
     
 
