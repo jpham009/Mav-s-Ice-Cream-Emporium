@@ -505,10 +505,11 @@ void Mainwin::on_restock_click(){
 	dialog.set_transient_for(*this);
 	dialog.show_all();
 	int result = dialog.run();
-	if(result == 1){
+	if (result == 1){
 		restock();
-	}
-
+		
+	} 
+	
 	dialog.close();
 
 	return;
@@ -517,6 +518,7 @@ void Mainwin::on_restock_click(){
 
 
 void Mainwin::restock(){
+	
 	double restock_cost = 0;
 	for(Mice::Container container : _containers){
 		restock_cost += (container.max_quantity()-container.quantity())*container.cost(); 
@@ -528,6 +530,23 @@ void Mainwin::restock(){
 		restock_cost += (topping.max_quantity()-topping.quantity())*topping.cost(); 
 	}
 	_balance -= restock_cost;
+
+	std::string confirm = "Restock cost will be $" + to_string_with_precision(restock_cost);
+	Gtk::Dialog dialog1("Confirm");
+	Gtk::Label l_confirm(confirm);
+	dialog1.set_border_width(15);
+	l_confirm.set_margin_bottom(15);
+	dialog1.get_vbox()->pack_start(l_confirm);
+	dialog1.add_button("Cancel", 0);
+	dialog1.add_button("Ok", 1);
+	dialog1.show_all();	
+	int result = dialog1.run();
+	if (result == 0){
+		Gtk::MessageDialog cancel("Your request has been cancelled!");
+		cancel.run();
+		cancel.close();		
+		return; 
+	} 
 		
 	std::string s = "Your balance is: $" + to_string_with_precision(_balance);
 	Gtk::MessageDialog dialog(s);
