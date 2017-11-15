@@ -126,6 +126,13 @@ Mainwin::Mainwin() {
     restock_button->set_tooltip_markup("Restock");
     restock_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_restock_click));
     toolbar3->append(*restock_button);
+	
+	// F I L L  O R D E R 
+	Gtk::Image *fill_order_image = Gtk::manage(new Gtk::Image("fill_order.png"));
+    Gtk::ToolButton *fill_order_button = Gtk::manage(new Gtk::ToolButton(*fill_order_image));
+    fill_order_button->set_tooltip_markup("Fill Order");
+    fill_order_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_fill_order_click));
+    toolbar3->append(*fill_order_button);
 
 	
 	
@@ -230,13 +237,20 @@ Mainwin::Mainwin() {
 	
 		//just keep work working off GLOBAL ACCESS	
 
-	if(access==1) {username = _managers[p_index].name(); role = _managers[p_index].type();}
-	else if(access==2) {username = _servers[p_index].name(); role = _servers[p_index].type();}
-	else if(access==3) {username = _customers[p_index].name(); role = _customers[p_index].type();}
-	else {username = "Guest"; role = "Guest";}
 	
-	Gtk::MessageDialog dialogn(username);
-	dialogn.run();
+	
+
+
+
+
+
+//	if(access==1) {username = _managers[p_index].name(); role = _managers[p_index].type();}
+//	else if(access==2) {username = _servers[p_index].name(); role = _servers[p_index].type();}
+//	else if(access==3) {username = _customers[p_index].name(); role = _customers[p_index].type();}
+//	else {username = "Guest"; role = "Guest";}
+//	
+//	Gtk::MessageDialog dialogn(username);
+//	dialogn.run();
 		
 //	if(access==1) Mice::Manager *manager = *_managers[login_vector[1]]; 
 //	else if(access==2) Mice::Server *server = *_servers[login_vector[1]];  
@@ -381,12 +395,24 @@ vector<int> Mainwin::login() { //TODO
 void Mainwin::on_create_order_click(){
 	try { //OG code 
 	Mice::Order order = create_order();
-	order_filled(order);
 	_orders.push_back(order);
 
 	} 
 	catch(std::runtime_error e) { // User canceled order
    	}
+}
+
+
+void Mainwin::on_fill_order_click(){
+	if (_orders.empty()) return;
+	if (fill_counter > order_counter) return;
+	_orders[fill_counter-1].fill(); 
+	std::string s = "Order #" + to_string(fill_counter) + " has been filled!"; //check
+	Gtk::MessageDialog dialog(s);
+	dialog.run(); 
+	dialog.close();
+	fill_counter++;
+	return; 
 }
 
 

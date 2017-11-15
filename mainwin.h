@@ -22,6 +22,7 @@
 
 
 static int order_counter = 1; //order numbers
+static int fill_counter = 1; //track filled orders
 static int customer_id = 10000; 
 static int employee_id = 20000;
 
@@ -57,7 +58,9 @@ class Mainwin : public Gtk::Window
 
 		
 		///////////////TODO///////////////
-	
+
+
+
 		//Functions
 		std::string customers_to_string();
 		std::string managers_to_string();
@@ -84,10 +87,10 @@ class Mainwin : public Gtk::Window
 		void on_restock_click();
 
 		vector<int> login();
-		void order_filled(Mice::Order order);
+		void fill_order(Mice::Order order);
 		void restock();
 
-
+		void on_fill_order_click(); 
 
 
 

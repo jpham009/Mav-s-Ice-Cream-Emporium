@@ -2,7 +2,7 @@
 
 
 
-void Mainwin::order_filled(Mice::Order order){
+void Mainwin::fill_order(Mice::Order order){
 	_money_in += order.total_price(); 
 	_balance += _money_in; 
 

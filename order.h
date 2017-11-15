@@ -23,6 +23,9 @@ class Order {
 	int order_number(); 
 	double total_price();
 	std::string total_price_string();
+	void fill();
+	bool state();
+	
 	
 	
 	///////////////TODO///////////////
@@ -30,7 +33,7 @@ class Order {
 	std::vector<Serving> _servings;	
 	int _num_of_servings; 
 	double _total_price{0};
-	bool state = false; //true = filled & false = unfilled 
+	bool _state = false; //true = filled & false = unfilled 
 
 };
 

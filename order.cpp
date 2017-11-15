@@ -31,7 +31,13 @@ void Order::total(){
 	return;
 }
 
+void Order::fill(){ //state change
+	_state = true; 
+}
 
+bool Order::state(){
+	return _state;
+}
 
 
 std::string Order::to_string(){
