@@ -1,6 +1,13 @@
 #ifndef MAINWIN_H
 #define MAINWIN_H
 
+#include <exception>
+#include <stdexcept>
+#include <iostream>
+#include <sstream>
+#include <vector>
+#include <iomanip>
+
 #include "container.h"
 #include "scoop.h"
 #include "topping.h"
@@ -12,6 +19,19 @@
 #include "customer.h"
 #include "server.h"
 #include "manager.h"
+
+
+static int order_counter = 1; //order numbers
+static int customer_id = 10000; 
+static int employee_id = 20000;
+
+template <typename T>
+std::string to_string_with_precision(const T a_value, const int n = 2)
+{
+    std::ostringstream out;
+    out << std::fixed << std::setprecision(n) << a_value;
+    return out.str();
+}
 
 class Mainwin : public Gtk::Window
 {
@@ -63,9 +83,11 @@ class Mainwin : public Gtk::Window
 	
 		void on_restock_click();
 
-		Mice::Manager* login();
+		vector<int> login();
 		void order_filled(Mice::Order order);
 		void restock();
+
+
 
 
 
