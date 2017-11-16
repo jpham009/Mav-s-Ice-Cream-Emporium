@@ -1,11 +1,6 @@
 #include "mainwin.h"
 
 
-Person *current_user;
-//if current_user.access() == 1
-//switch 
-
-
 Mainwin::Mainwin() {
 
 	////////// L O A D  D E F A U L T S //////////
@@ -17,13 +12,17 @@ Mainwin::Mainwin() {
 	easter_egg(); 
 
 
-	//needs to be global
+	////////// L O G I N //////////
 	std::vector<int> login_vector = login();
 	p_access = login_vector[0];
 	p_index = login_vector[1];
-	std::string username;
-	std::string role;
 	
+
+	if(p_access==1) {username = _managers[p_index].name(); role = _managers[p_index].type(); order_s = std::to_string(_managers[p_index].get_orders());}
+	else if(p_access==2) {username = _servers[p_index].name(); role = _servers[p_index].type();}
+	else if(p_access==3) {username = _customers[p_index].name(); role = _customers[p_index].type();}
+	else {username = "Guest"; role = "Guest"; order_s = "Guest";}
+
 
     // /////////////////
     // 	M A I N  W I N 
@@ -35,6 +34,8 @@ Mainwin::Mainwin() {
     // Put a vertical box container as the Window contents
     Gtk::Box *vbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL, 0));
     add(*vbox);
+
+if(p_access <=3){
 
     // ///////
     // M E N U
@@ -113,15 +114,46 @@ Mainwin::Mainwin() {
     menuitem_about->signal_activate().connect(sigc::mem_fun(*this, &Mainwin::on_about_click));
     helpmenu->append(*menuitem_about);
 
+}
 
+	//////////////////////////////
+	// C O N S U M E R  L O G O //
+	//////////////////////////////
 
+if(p_access >= 3){
+Gtk::HBox *hb_title = Gtk::manage(new Gtk::HBox());
+Gtk::Image *order_logo = Gtk::manage(new Gtk::Image("order_logo.png"));
+order_logo->set_margin_right(30);
+ 
+//Gtk::Label *l_title = Gtk::manage(new Gtk::Label());
+//std::string s_title = "<span font='18' color='blue' weight='bold'>    Mav's\n Ice Cream\n Emporium</span>";
+//l_title->set_markup(s_title);
+//l_title->set_halign(Gtk::ALIGN_CENTER);
+//hb_title->pack_start(*l_title); 
 
-/////////////////////////////////////////////////////////////////////////////////////////////
+hb_title->pack_start(*order_logo); 
+hb_title->set_halign(Gtk::ALIGN_CENTER);
+hb_title->set_valign(Gtk::ALIGN_START);
+hb_title->set_margin_top(50);
+hb_title->set_margin_bottom(80);
+	vbox->add(*hb_title);
+	vbox->override_background_color(Gdk::RGBA("#f7f7f7"));
+	
+
+}
+	///////////////////
+	// T O O L B A R //
+	///////////////////
 
  	Gtk::Toolbar *toolbar3 = Gtk::manage(new Gtk::Toolbar);
+	
+	toolbar3->set_halign(Gtk::ALIGN_CENTER);
+	toolbar3->set_valign(Gtk::ALIGN_CENTER);
+	if(p_access >= 3){
+		toolbar3->override_background_color(Gdk::RGBA("opaque"));
+		toolbar3->set_margin_bottom(100);
+	}
     vbox->add(*toolbar3);
-
-if(p_access <= 4){}
 
    	//     C R E A T E   O R D E R
     // Add a Create Order icon
@@ -138,7 +170,7 @@ if(p_access <= 4){}
     menu_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::menu_click));
     toolbar3->append(*menu_button);
 
-	
+
 if(p_access <= 2){
 
 	//  F I L L  O R D E R 
@@ -157,16 +189,8 @@ if(p_access <= 2){
 
 
 }
-	
 
-	
-	
-
-//SEPARATOR
-// Gtk::SeparatorToolItem *sep = Gtk::manage(new Gtk::SeparatorToolItem());
-//   sep->set_expand(true);  // The expanding sep forces the Quit button to the right
-//   toolbar->append(*sep);
-
+if(p_access <= 2){
  	Gtk::Toolbar *toolbar2 = Gtk::manage(new Gtk::Toolbar);
     vbox->add(*toolbar2);
 
@@ -177,13 +201,6 @@ if(p_access <= 2){
     add_customer_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_add_customer_click));
     toolbar2->append(*add_customer_button);
 
-	// 	A D D  S E R V E R 
-    add_server_image = Gtk::manage(new Gtk::Image("add_server.png"));
-    Gtk::ToolButton *add_server_button = Gtk::manage(new Gtk::ToolButton(*add_server_image));
-    add_server_button->set_tooltip_markup("Add Server");
-    add_server_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_add_server_click));
-    toolbar2->append(*add_server_button);
-
 	// 	L I S T  A L L  C U S T O M E R S
     list_customers_image = Gtk::manage(new Gtk::Image("list_customers.png"));
     Gtk::ToolButton *list_customers_button = Gtk::manage(new Gtk::ToolButton(*list_customers_image));
@@ -191,15 +208,26 @@ if(p_access <= 2){
     list_customers_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_list_customers));
     toolbar2->append(*list_customers_button);
 
+	if(p_access <=1){
+	// 	A D D  S E R V E R 
+    add_server_image = Gtk::manage(new Gtk::Image("add_server.png"));
+    Gtk::ToolButton *add_server_button = Gtk::manage(new Gtk::ToolButton(*add_server_image));
+    add_server_button->set_tooltip_markup("Add Server");
+    add_server_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_add_server_click));
+    toolbar2->append(*add_server_button);
+
+
 	// 	L I S T  A L L  E M P L O Y E E S 
     list_servers_image = Gtk::manage(new Gtk::Image("list_employees.png"));
     Gtk::ToolButton *list_servers_button = Gtk::manage(new Gtk::ToolButton(*list_servers_image));
     list_servers_button->set_tooltip_markup("List All Employees");
     list_servers_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_list_employees));
     toolbar2->append(*list_servers_button);
+		
+	}
+}
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////
 if(p_access <= 1){  
 	  // /////////////
     // T O O L B A R
@@ -230,60 +258,15 @@ if(p_access <= 1){
     money_button->set_tooltip_markup("$$$");
     money_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_money_click));
     toolbar->append(*money_button);
-	
-}
+}	
+
 	//////////////////////////
     /// E N D :: M A I N  W I N  
     //////////////////////////
 
 
-
-
-	//Status bar initialize
-
-
-	////////////////////////TODO////////////////////////
-//	Mice::Manager *manager = login();
-//	name_s = manager->name();
-//	manager->order_up();
-//	order_s = std::to_string(manager->get_orders());
-	
-
-		//just keep work working off GLOBAL ACCESS	
-
-	
-	
-_managers[p_index].order_filled(); 
-_managers[p_index].order_filled();
- _managers[p_index].order_filled();
- _managers[p_index].order_filled(); 
-
-
-
-
-	if(p_access==1) {username = _managers[p_index].name(); role = _managers[p_index].type(); order_s = std::to_string(_managers[p_index].get_orders());}
-//	else if(access==2) {username = _servers[p_index].name(); role = _servers[p_index].type();}
-//	else if(access==3) {username = _customers[p_index].name(); role = _customers[p_index].type();}
-	else {username = "Guest"; role = "Guest"; order_s = "Guest";}
-//	
-//	Gtk::MessageDialog dialogn(username);
-//	dialogn.run();
-		
-//	if(access==1) Mice::Manager *manager = *_managers[login_vector[1]]; 
-//	else if(access==2) Mice::Server *server = *_servers[login_vector[1]];  
-//	else if(access==3) Mice::Customer *customer = *_customers[login_vector[1]]; 
-//	else Mice::Customer guest("Guest", "Guest", "Guest"); //guest//TODO
-//		//	Gtk::MessageDialog dialogx("CHECK PASSED"); dialogx.run(); 	
-//	
-//	if(access==1) name_s = manager->name(); order_s = std::to_string(manager->get_orders());
-//	else if(access==2) name_s = server->name(); 
-//	else if(access==3) name_s = customer->name();  
-
-
 	////////////////////////TODO////////////////////////
 
-
-	//status(manager->name());
 	
 	//// S T A T U S   B A R   D I S P L A Y ////
     // Provide a status bar for game messages
@@ -304,7 +287,6 @@ _managers[p_index].order_filled();
 
     // Make the box and everything in it visible
     vbox->show_all();
-	
 
 }
 
@@ -375,27 +357,25 @@ vector<int> Mainwin::login() { //TODO first
 	
 	if(dialog.run() == 1){
 		//login
-		for(Mice::Manager manager : _managers){
-			int i = 1; int j = 0; 
-			if(manager.name() == e_custname.get_text()){
-				login_vector.push_back(i); login_vector.push_back(j);
+		
+		for(int i = 0; i < _managers.size(); i++){
+			if(_managers[i].name() == e_custname.get_text()){
+				login_vector.push_back(1); login_vector.push_back(i);
 				return login_vector;
-			} j++;
+			}
 		}
-		for(Mice::Server server : _servers){
-			int i = 2; int j = 0; 
-			if(server.name() == e_custname.get_text()){
-				login_vector.push_back(i); login_vector.push_back(j);
+		for(int i = 0; i < _servers.size(); i++){
+			if(_servers[i].name() == e_custname.get_text()){
+				login_vector.push_back(2); login_vector.push_back(i);
 				return login_vector;
-			} j++;
+			}
 		}	
-		for(Mice::Customer customer : _customers){
-			int i = 3; int j = 0; 
-			if(customer.name() == e_custname.get_text()){
-				login_vector.push_back(i); login_vector.push_back(j);
+		for(int i = 0; i < _customers.size(); i++){
+			if(_customers[i].name() == e_custname.get_text()){
+				login_vector.push_back(1); login_vector.push_back(i);
 				return login_vector;
-			} j++;
-		}	
+			}
+		}
 		login_vector.push_back(9); login_vector.push_back(9);
 		return login_vector;	
 	}
@@ -428,6 +408,18 @@ void Mainwin::on_fill_order_click(){
 	dialog.close();
 	fill_counter++;
 	return; 
+}
+
+
+void Mainwin::easter_egg(){
+	_customers.push_back(Mice::Customer{"Cheryl Dyer", "8178902356", std::to_string(customer_id++)});
+	_customers.push_back(Mice::Customer{"Daniel Fagan", "8178809444", std::to_string(customer_id++)});
+	_customers.push_back(Mice::Customer{"Michael Fagan", "8178912365", std::to_string(customer_id++)});
+	_servers.push_back(Mice::Server{"Michelle Pham", "6825590111", std::to_string(employee_id++), 12.50});
+	_servers.push_back(Mice::Server{"Russell Pham", "6824914447", std::to_string(employee_id++), 11.50});
+	_servers.push_back(Mice::Server{"Connor Pham", "6825932036", std::to_string(employee_id++), 11.75});
+	_managers.push_back(Mice::Manager{"Johnny Pham", "6825590692", std::to_string(employee_id++), 19.50});		
+	_managers.push_back(Mice::Manager{"SUPERUSER", "Super User", "SUPERUSER", 1.00});
 }
 
 
