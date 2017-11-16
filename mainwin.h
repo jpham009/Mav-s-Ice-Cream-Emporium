@@ -25,6 +25,8 @@ static int order_counter = 1; //order numbers
 static int fill_counter = 1; //track filled orders
 static int customer_id = 10000; 
 static int employee_id = 20000;
+static int p_access{4};
+static int p_index{4};
 
 template <typename T>
 std::string to_string_with_precision(const T a_value, const int n = 2)

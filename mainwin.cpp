@@ -6,8 +6,24 @@ Person *current_user;
 //switch 
 
 
-
 Mainwin::Mainwin() {
+
+	////////// L O A D  D E F A U L T S //////////
+
+	//Auto-Load Defaults
+	on_load_defaults_click();
+
+	//Easter Egg - Test Persons
+	easter_egg(); 
+
+
+	//needs to be global
+	std::vector<int> login_vector = login();
+	p_access = login_vector[0];
+	p_index = login_vector[1];
+	std::string username;
+	std::string role;
+	
 
     // /////////////////
     // 	M A I N  W I N 
@@ -105,6 +121,8 @@ Mainwin::Mainwin() {
  	Gtk::Toolbar *toolbar3 = Gtk::manage(new Gtk::Toolbar);
     vbox->add(*toolbar3);
 
+if(p_access <= 4){}
+
    	//     C R E A T E   O R D E R
     // Add a Create Order icon
     Gtk::Image *create_order_button_image = Gtk::manage(new Gtk::Image("new_order.png"));
@@ -112,7 +130,7 @@ Mainwin::Mainwin() {
     create_order_button->set_tooltip_markup("Create a new order");
     create_order_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_create_order_click));
     toolbar3->append(*create_order_button);
-	
+
 	//		S H O W  M E N U  
 	Gtk::Image *menu_image = Gtk::manage(new Gtk::Image("menu.png"));
     Gtk::ToolButton *menu_button = Gtk::manage(new Gtk::ToolButton(*menu_image));
@@ -120,19 +138,26 @@ Mainwin::Mainwin() {
     menu_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::menu_click));
     toolbar3->append(*menu_button);
 
-	//		R E S T O C K
-	Gtk::Image *restock_image = Gtk::manage(new Gtk::Image("restock.png"));
-    Gtk::ToolButton *restock_button = Gtk::manage(new Gtk::ToolButton(*restock_image));
-    restock_button->set_tooltip_markup("Restock");
-    restock_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_restock_click));
-    toolbar3->append(*restock_button);
 	
-	// F I L L  O R D E R 
+if(p_access <= 2){
+
+	//  F I L L  O R D E R 
 	Gtk::Image *fill_order_image = Gtk::manage(new Gtk::Image("fill_order.png"));
     Gtk::ToolButton *fill_order_button = Gtk::manage(new Gtk::ToolButton(*fill_order_image));
     fill_order_button->set_tooltip_markup("Fill Order");
     fill_order_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_fill_order_click));
     toolbar3->append(*fill_order_button);
+
+//		R E S T O C K
+	Gtk::Image *restock_image = Gtk::manage(new Gtk::Image("restock.png"));
+    Gtk::ToolButton *restock_button = Gtk::manage(new Gtk::ToolButton(*restock_image));
+    restock_button->set_tooltip_markup("Restock");
+    restock_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_restock_click));
+    toolbar3->append(*restock_button);
+
+
+}
+	
 
 	
 	
@@ -175,7 +200,8 @@ Mainwin::Mainwin() {
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-    // /////////////
+if(p_access <= 1){  
+	  // /////////////
     // T O O L B A R
     // Add a toolbar to the vertical box below the menu
     Gtk::Toolbar *toolbar = Gtk::manage(new Gtk::Toolbar);
@@ -205,19 +231,13 @@ Mainwin::Mainwin() {
     money_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_money_click));
     toolbar->append(*money_button);
 	
+}
 	//////////////////////////
     /// E N D :: M A I N  W I N  
     //////////////////////////
 
 
 
-	////////// L O A D  D E F A U L T S //////////
-
-	//Auto-Load Defaults
-	on_load_defaults_click();
-
-	//Easter Egg - Test Persons
-	easter_egg(); 
 
 	//Status bar initialize
 
@@ -228,26 +248,23 @@ Mainwin::Mainwin() {
 //	manager->order_up();
 //	order_s = std::to_string(manager->get_orders());
 	
-	int access, p_index; //needs to be global
-	std::vector<int> login_vector = login();
-	access = login_vector[0];
-	p_index = login_vector[1];
-	std::string username;
-	std::string role;
-	
+
 		//just keep work working off GLOBAL ACCESS	
 
 	
 	
+_managers[p_index].order_filled(); 
+_managers[p_index].order_filled();
+ _managers[p_index].order_filled();
+ _managers[p_index].order_filled(); 
 
 
 
 
-
-//	if(access==1) {username = _managers[p_index].name(); role = _managers[p_index].type();}
+	if(p_access==1) {username = _managers[p_index].name(); role = _managers[p_index].type(); order_s = std::to_string(_managers[p_index].get_orders());}
 //	else if(access==2) {username = _servers[p_index].name(); role = _servers[p_index].type();}
 //	else if(access==3) {username = _customers[p_index].name(); role = _customers[p_index].type();}
-//	else {username = "Guest"; role = "Guest";}
+	else {username = "Guest"; role = "Guest"; order_s = "Guest";}
 //	
 //	Gtk::MessageDialog dialogn(username);
 //	dialogn.run();
@@ -313,7 +330,7 @@ void Mainwin::on_quit_click() {
 }
 
 
-vector<int> Mainwin::login() { //TODO
+vector<int> Mainwin::login() { //TODO first
 //return {list, index}
 
     Gtk::Dialog dialog{"Login", *this};
@@ -389,8 +406,6 @@ vector<int> Mainwin::login() { //TODO
 
 }
     
-
-////////////TODO////////////
 
 void Mainwin::on_create_order_click(){
 	try { //OG code 
