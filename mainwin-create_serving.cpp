@@ -5,7 +5,7 @@
 
 Mice::Serving Mainwin::create_serving() {
     int container = select_container();
-    if (container == -1) throw std::runtime_error("Canceled");
+    if (container == -1) throw std::runtime_error("Canceled"); 
 
     Mice::Serving serving{_containers[container]};
 	_container_selection.push_back(container); 

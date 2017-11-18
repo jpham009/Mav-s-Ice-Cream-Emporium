@@ -49,7 +49,7 @@ void Mainwin::on_load_defaults_click() {
 		default_image.set_halign(Gtk::ALIGN_START);
 		default_image.set_valign(Gtk::ALIGN_CENTER);
 		dialog.show_all();
-        dialog.run();
+        dialog.run();	
         dialog.close();
  } 
 

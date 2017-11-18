@@ -1,10 +1,11 @@
 #include "mainwin.h"
-
+#include "treeview.h"
 
 Mainwin::Mainwin() {
 
 	////////// L O A D  D E F A U L T S //////////
-
+	
+	//order_window();
 	//Auto-Load Defaults
 	on_load_defaults_click();
 
@@ -149,9 +150,11 @@ hb_title->set_margin_bottom(80);
 	
 	toolbar3->set_halign(Gtk::ALIGN_CENTER);
 	toolbar3->set_valign(Gtk::ALIGN_CENTER);
+
 	if(p_access >= 3){
 		toolbar3->override_background_color(Gdk::RGBA("opaque"));
 		toolbar3->set_margin_bottom(100);
+		toolbar3->set_hexpand(true);
 	}
     vbox->add(*toolbar3);
 
@@ -225,6 +228,7 @@ if(p_access <= 2){
     toolbar2->append(*list_servers_button);
 		
 	}
+
 }
 
 
@@ -258,6 +262,19 @@ if(p_access <= 1){
     money_button->set_tooltip_markup("$$$");
     money_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_money_click));
     toolbar->append(*money_button);
+
+if(p_access < 3){
+	//ORDER SCREEN//TODO
+	pending_image = Gtk::manage(new Gtk::Image("pendingorders.png"));
+    Gtk::ToolButton *pending_button = Gtk::manage(new Gtk::ToolButton(*pending_image));
+    pending_button->set_tooltip_markup("Pending Orders");
+    pending_button->signal_clicked().connect(sigc::mem_fun(*this, &Mainwin::on_order_screen_click));
+    toolbar->append(*pending_button);
+		
+
+
+	}
+
 }	
 
 	//////////////////////////
@@ -319,8 +336,9 @@ vector<int> Mainwin::login() { //TODO first
 	dialog.set_border_width(15); //borders
 	dialog.set_transient_for(*this);
     const int WIDTH = 15;
-
-   
+	dialog.add_button("Cancel", 0);
+    dialog.add_button("Login", 1);
+   	
  	    // Name 
     Gtk::HBox b_custname;
     Gtk::Label l_custname{"Username:"};
@@ -347,8 +365,8 @@ vector<int> Mainwin::login() { //TODO first
     dialog.get_vbox()->pack_start(b_custphone, Gtk::PACK_SHRINK);
 
     // Show dialog
-    dialog.add_button("Cancel", 0);
-    dialog.add_button("Login", 1);
+   
+	
     dialog.show_all();
 	
 
@@ -410,7 +428,9 @@ void Mainwin::on_fill_order_click(){
 	return; 
 }
 
-
+void Mainwin::on_order_screen_click(){
+	order_window();
+}
 void Mainwin::easter_egg(){
 	_customers.push_back(Mice::Customer{"Cheryl Dyer", "8178902356", std::to_string(customer_id++)});
 	_customers.push_back(Mice::Customer{"Daniel Fagan", "8178809444", std::to_string(customer_id++)});
@@ -419,7 +439,10 @@ void Mainwin::easter_egg(){
 	_servers.push_back(Mice::Server{"Russell Pham", "6824914447", std::to_string(employee_id++), 11.50});
 	_servers.push_back(Mice::Server{"Connor Pham", "6825932036", std::to_string(employee_id++), 11.75});
 	_managers.push_back(Mice::Manager{"Johnny Pham", "6825590692", std::to_string(employee_id++), 19.50});		
-	_managers.push_back(Mice::Manager{"SUPERUSER", "Super User", "SUPERUSER", 1.00});
+	_managers.push_back(Mice::Manager{"MANAGER1325", "Manager", "Manager", 1.00});
+	_servers.push_back(Mice::Server{"SERVER1325", "Server", "Server", 1.00});
+	_customers.push_back(Mice::Customer{"CUSTOMER", "Customer", "Customer"});
+	return;
 }
 
 
@@ -438,5 +461,7 @@ void Mainwin::on_about_click() {
                                             "License: Creative Commons 4.0 BY-NC"};
     dialog.set_artists(artists);
     dialog.run();
+	return;
 }
+
 

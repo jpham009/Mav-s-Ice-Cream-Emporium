@@ -69,7 +69,10 @@ std::string Order::to_string(){
 }
 
 int Order::order_number(){
-	return _order_number++;
+	return _order_number++; //increase counter
+}
+int Order::get_order_number(){
+	return _order_number;
 }
 
 

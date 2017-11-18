@@ -93,10 +93,68 @@ class Mainwin : public Gtk::Window
 		vector<int> login();
 		void fill_order(Mice::Order order);
 		void restock();
-
+	void on_order_screen_click();
 		void on_fill_order_click(); 
+void on_file_open_click(); 
+void on_file_save_click();
+Gtk::Button button1{"Fill"};
+Gtk::Button button2{"Fill"};
+Gtk::Button button3{"Fill"};
+Gtk::Button button4{"Fill"};
+Gtk::Button button5{"Fill"};
+Gtk::Button button6{"Fill"};
+	Gtk::Button refresh_button{"Refresh"};
+//Gtk::Dialog *orderwindow;
+void order_window();
+void click1();
+	void click2();
+	void click3();
+	void click4();
+	void click5();
+	void click6();
+void clickrefresh();
+void orders_pending();
+vector<int> _pending{3,8,9};
+vector<std::string> _pendingstring;
+Gtk::Dialog orderwindow;
+Gtk::VBox mainbox;
 
+Gtk::HBox levelbox1;
+Gtk::HBox levelbox2;
 
+Gtk::VBox rowbox1;
+Gtk::VBox rowbox2;
+Gtk::VBox rowbox3;
+Gtk::VBox rowbox4;
+Gtk::VBox rowbox5;
+Gtk::VBox rowbox6;
+
+	Gtk::VBox innerbox1;
+	Gtk::VBox innerbox2;
+	Gtk::VBox innerbox3;
+	Gtk::VBox innerbox4;
+	Gtk::VBox innerbox5;
+	Gtk::VBox innerbox6;
+	Gtk::Label label1;
+	Gtk::Label label2;
+	Gtk::Label label3;
+	Gtk::Label label4;
+	Gtk::Label label5;
+	Gtk::Label label6;
+
+	Gtk::Frame frame1;
+	Gtk::Frame frame2;
+	Gtk::Frame frame3;
+	Gtk::Frame frame4;
+	Gtk::Frame frame5;
+	Gtk::Frame frame6;
+
+	Gtk::VBox inner2box1;
+	Gtk::VBox inner2box2;
+	Gtk::VBox inner2box3;
+	Gtk::VBox inner2box4;
+	Gtk::VBox inner2box5;
+	Gtk::VBox inner2box6;
 
 
 
@@ -145,6 +203,7 @@ Gtk::Label *name_m;
 		Gtk::Image *list_customers_image;
 		Gtk::Image *list_servers_image;
 		Gtk::Image *menu_image;
+		Gtk::Image *pending_image;
 		
 };
 #endif 

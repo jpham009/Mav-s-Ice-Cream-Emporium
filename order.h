@@ -25,6 +25,7 @@ class Order {
 	std::string total_price_string();
 	void fill();
 	bool state();
+	int get_order_number();
 	
 	
 	
@@ -34,6 +35,7 @@ class Order {
 	int _num_of_servings; 
 	double _total_price{0};
 	bool _state = false; //true = filled & false = unfilled 
+	int _order_number{0};
 
 };
 
