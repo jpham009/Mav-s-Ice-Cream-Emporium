@@ -10,10 +10,11 @@ void Mainwin::menu_click() {
 
 	Gtk::MessageDialog dialog(menu, "MICE Menu"); 
 	dialog.set_transient_for(*this);
-	Gtk::Image menu_image("menu_image.png");
+	Gtk::Image menu_image("menu_image2.png");
 	dialog.set_image(menu_image);
 	menu_image.set_halign(Gtk::ALIGN_START);
 	menu_image.set_valign(Gtk::ALIGN_CENTER);
+menu_image.set_margin_right(20);
 	dialog.show_all();
 	dialog.run();
 	dialog.close();

@@ -3,6 +3,15 @@
 #include <stdexcept>
 #include <iostream>
 
+void Mainwin::on_create_order_click(){
+	try {  
+		Mice::Order order = create_order();
+		_emp->add_order(order);
+	} 
+	catch(std::runtime_error e) { 
+   	}
+}
+
 Mice::Order Mainwin::create_order() {
 
 		//// Create order /////
@@ -66,7 +75,10 @@ Mice::Order Mainwin::create_order() {
 		Gtk::Label l_confirm{"Is your order correct?\n"};
 		b_confirm.pack_start(l_confirm, Gtk::PACK_SHRINK);
 		
-		Gtk::Label l_order{order.to_string()};
+		//order generates
+		order.to_string();
+
+		Gtk::Label l_order{order.get_order_string()};
 		b_confirm.pack_start(l_order, Gtk::PACK_SHRINK);
 		dialog2.get_vbox()->pack_start(b_confirm, Gtk::PACK_SHRINK);
 
@@ -96,7 +108,9 @@ Mice::Order Mainwin::create_order() {
 		dialog3.show_all();
 		dialog3.run();
 		dialog3.hide();
-
+	
+		//set order number
+		order.set_order_number(order_counter++);
 
 		//// Order Placement /////
 		Gtk::Dialog dialog4;
@@ -106,16 +120,30 @@ Mice::Order Mainwin::create_order() {
 		Gtk::VBox b_payment;
 		b_payment.set_border_width(30);
 		b_payment.set_margin_bottom(15);
-		std::string thankyou_string = "Thank you for your purchase!\n\n You are order number #" + std::to_string(order.order_number());
+		std::string thankyou_string = "Thank you for your purchase!\n\n You are order number #" + std::to_string(order.get_order_number());
 		Gtk::Label l_payment{thankyou_string};
-		b_payment.pack_start(l_payment);
 		b_payment.pack_start(l_payment);
 		dialog4.get_vbox()->pack_start(b_payment);
 		dialog4.add_button("Ok", 1);
+		dialog4.set_transient_for(*this);
 		dialog4.show_all();
 		dialog4.run();
 		dialog4.hide();
 		
+		fill_order(order);
 
 		return order; 
+}
+
+
+void Mainwin::on_fill_order_click(){
+	if (order_counter <= 1) return;
+	if (fill_counter > order_counter) return;
+	_emp->order(fill_counter-1).fill(); 
+	std::string s = "Order #" + to_string(fill_counter) + " has been filled!"; 
+	Gtk::MessageDialog dialog(s);
+	dialog.run(); 
+	dialog.close();
+	fill_counter++;
+	return; 
 }

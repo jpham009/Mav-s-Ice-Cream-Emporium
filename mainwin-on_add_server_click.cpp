@@ -76,7 +76,7 @@ void Mainwin::on_add_server_click() {
         }
     }
 	Mice::Server new_server(e_name.get_text(), e_phone.get_text(), std::to_string(employee_id), d_salary);
-		_servers.push_back(new_server);
+		_emp->add_server(new_server);
 
 	Gtk::MessageDialog mdialog(e_name.get_text() + "\nEmployee ID: #" + std::to_string(employee_id) + "\nhas been added!");
 	mdialog.set_transient_for(*this);

@@ -2,6 +2,8 @@
 #define _TOPPING_H
 
 #include "item.h"
+#include <iostream>
+#include <fstream>
 
 namespace Mice {
 
@@ -9,6 +11,8 @@ class Topping : public Item {
   public:
     Topping(std::string name, std::string description, double cost, double price,
               int amount);
+    Topping(std::istream& ist);
+    void save(std::ostream& ost);
     std::string type() const override;
     int amount() const;
     const static int LIGHT_AMOUNT = 1;

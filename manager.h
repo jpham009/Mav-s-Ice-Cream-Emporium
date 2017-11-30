@@ -2,6 +2,7 @@
 #define _MANAGER_H
 #include <string>
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include "customer.h"
 #include "person.h"
@@ -18,7 +19,9 @@ namespace Mice{
 
 class Manager : public Person {
 	public:
-	Manager(std::string name, std::string phone, std::string id, double salary);
+	Manager(std::string name, std::string id, std::string phone,  double salary);
+	Manager(std::istream& ist);
+       void save(std::ostream& ost);
 	string type() override;
 
 	//set
@@ -30,6 +33,11 @@ class Manager : public Person {
 	int get_orders();
 	void get_customer(); //need to ADD 
 	void order_filled();
+	int _num_orders;
+	double pay_manager();
+	int num_orders(); 
+	int salary();
+
 
 ///////////TODO/////////////////
 
@@ -42,13 +50,9 @@ class Manager : public Person {
 ////////////////////////////	
 	private:
 	int access = 1; //admin access
-	double salary;
-	int orders = 0;
+	double _salary{0};
 
 	//total earnings
-////////////////////////////
-	vector<Customer> customerData;
-////////////////////////////
 
 
 };

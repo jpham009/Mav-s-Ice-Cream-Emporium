@@ -8,6 +8,7 @@ namespace Mice {
 class Item {
   public:
     Item(std::string name, std::string description, double cost, double price);
+	Item();
     void restock(int quantity = 25);
     void consume(int quantity = 1);
     virtual std::string type() const;
@@ -17,13 +18,13 @@ class Item {
     double price() const;
     int quantity() const;
 	int max_quantity() const;
-  private:
+
     std::string _name;
     std::string _description;
     double _cost;
     double _price;
     int _quantity;
-	int _max_quantity;
+	int _max_quantity{25};
     // Gtk::Image _photo;
 };
 

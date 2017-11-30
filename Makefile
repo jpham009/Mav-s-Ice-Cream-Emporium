@@ -19,7 +19,8 @@ INCLUDE=`/usr/bin/pkg-config gtkmm-3.0 --cflags --libs`
 #executable filename
 EXECUTABLE=mice
 
-all: div $(EXECUTABLE)
+all: div $(EXECUTABLE) 
+#changed
 
 #Special symbols used:
 #$^ - is all the dependencies (in this case =$(OBJECTS) )
@@ -27,7 +28,7 @@ all: div $(EXECUTABLE)
 
 $(EXECUTABLE): $(MOBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(INCLUDE)
-	./mice
+	
 
 test: CXXFLAGS+= -g
 test: $(TOBJECTS)

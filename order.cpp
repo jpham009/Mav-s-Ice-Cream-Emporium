@@ -39,33 +39,55 @@ bool Order::state(){
 	return _state;
 }
 
+bool Order::get_paid(){
+	return _paid;
+}
 
-std::string Order::to_string(){
+bool Order::paid(){
+	_paid = true;
+}
+
+
+void Order::to_string(){
+	_order_string = "";
 	std::string s = "\n";
 	
 	for(int i = 0; i < _servings.size(); i++){
 		double serving_price = 0;
-		s += "Serving #" + std::to_string(i) + "\n";
-		s = s + "\nContainer: \n" + "\t" + _servings[i].container().name() + "\t$" + to_string_with_precision(_servings[i].container().price()) + "\n"; 
+		s += "[Serving #" + std::to_string(i+1) +"]";
+		s = s + "\n   CONTAINER: " + _servings[i].container().name() + "\t$" + to_string_with_precision(_servings[i].container().price()) + "\n"; 
 		serving_price += _servings[i].container().price();
-		s += "Scoops: \n";
+	
 		for (Scoop scoop : _servings[i].scoops()) {
-			s = s + "\t"+ scoop.name() + "\t$" + to_string_with_precision(scoop.price()) + "\n"; 
+			s += "   SCOOP: " + scoop.name() + "\t$" + to_string_with_precision(scoop.price()) + "\n"; 
 		serving_price += scoop.price();
 		}
-		s += "Toppings: \n";
+	
 		for (Topping topping : _servings[i].toppings()){
-			 s = s + "\t" + topping.name() + "\t$" + to_string_with_precision(topping.price()) + "\n"; 
+			 s += "   TOPPING: " + topping.name() + "\t$" + to_string_with_precision(topping.price()) + "\n"; 
 		serving_price += topping.price(); 	
 		}
 		
-		s += "\t\tServing price: $" + to_string_with_precision(serving_price) + "\n\n";
+		//s += "\tServing price: $" + to_string_with_precision(serving_price) + "\n\n";
 	}
 
 		Order::total();
-		s+= "\n\nYour total is: " + total_price_string() + "\n\n"; 
+		s+= "\nYour total is: " + total_price_string() + "\n\n"; 
 
-	return s;
+	_order_string = s; 
+	return;
+}
+
+
+std::string Order::get_order_string(){
+	return _order_string;	
+}
+
+void Order::cancel(){
+	_cancelled = true;
+}
+bool Order::cancelled(){
+	return _cancelled;
 }
 
 int Order::order_number(){
@@ -75,6 +97,9 @@ int Order::get_order_number(){
 	return _order_number;
 }
 
+void Order::set_order_number(int i){
+	_order_number = i;
+}
 
 
 

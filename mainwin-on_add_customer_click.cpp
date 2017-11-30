@@ -43,7 +43,7 @@ void Mainwin::on_add_customer_click() {
 	if(result == 1){ 
 		// Instance item
 		Mice::Customer new_customer(e_custname.get_text(), e_custphone.get_text(), std::to_string(customer_id));
-		_customers.push_back(new_customer);
+		_emp->add_customer(new_customer);
 		Gtk::MessageDialog mdialog(e_custname.get_text() + "\nCustomer ID: #" + std::to_string(customer_id) + "\nhas been added!");
 		mdialog.set_transient_for(*this);
 		customer_id++; 

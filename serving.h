@@ -5,12 +5,17 @@
 #include "scoop.h"
 #include "topping.h"
 #include <vector>
+#include <iostream>
+#include <fstream>
 
 namespace Mice {
 
 class Serving {
   public:
     Serving(Container container);
+    Serving(std::istream& ist);
+    void save(std::ostream& ost);
+
     void add_scoop(Scoop scoop);
     void add_topping(Topping topping);
     Container container() const;
@@ -21,7 +26,7 @@ class Serving {
 	Scoop scoop(int i);
 	Topping topping(int i);
   private:
-    Container _container;
+    Container _container{"", "", 0, 0, 0};
     std::vector<Scoop> _scoops;
     std::vector<Topping> _toppings;
 };

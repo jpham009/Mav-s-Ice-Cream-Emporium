@@ -7,20 +7,21 @@
 #include <sstream>
 #include <vector>
 #include <iomanip>
-
 #include "container.h"
 #include "scoop.h"
 #include "topping.h"
 #include "serving.h"
 #include <gtkmm.h>
 #include <string>
-#include "dialogs.h"
 #include "order.h"
 #include "customer.h"
 #include "server.h"
 #include "manager.h"
+#include "emporium.h"
+#include "mainwin-orderwin.h"
 
-
+static int WINDOW_COUNTER =1;
+static int emp_count = 1;
 static int order_counter = 1; //order numbers
 static int fill_counter = 1; //track filled orders
 static int customer_id = 10000; 
@@ -29,6 +30,7 @@ static int p_access{4};
 static int p_index{4};
 static std::string username;
 static std::string role;
+static int gallery_image = 0;
 
 template <typename T>
 std::string to_string_with_precision(const T a_value, const int n = 2)
@@ -59,10 +61,11 @@ class Mainwin : public Gtk::Window
 		Mice::Order create_order();  
 		void status(std::string message); 
 
-
+		void start();
+		void logout();
 		
 		///////////////TODO///////////////
-
+		void pending_orders();
 
 
 		//Functions
@@ -97,73 +100,73 @@ class Mainwin : public Gtk::Window
 		void on_fill_order_click(); 
 void on_file_open_click(); 
 void on_file_save_click();
-Gtk::Button button1{"Fill"};
-Gtk::Button button2{"Fill"};
-Gtk::Button button3{"Fill"};
-Gtk::Button button4{"Fill"};
-Gtk::Button button5{"Fill"};
-Gtk::Button button6{"Fill"};
-	Gtk::Button refresh_button{"Refresh"};
-//Gtk::Dialog *orderwindow;
+
 void order_window();
-void click1();
-	void click2();
-	void click3();
-	void click4();
-	void click5();
-	void click6();
+
+//TODO
+std::vector<int> _pending;
+std::vector<std::string> _pendingstring;
+
 void clickrefresh();
-void orders_pending();
-vector<int> _pending{3,8,9};
-vector<std::string> _pendingstring;
-Gtk::Dialog orderwindow;
-Gtk::VBox mainbox;
 
-Gtk::HBox levelbox1;
-Gtk::HBox levelbox2;
 
-Gtk::VBox rowbox1;
-Gtk::VBox rowbox2;
-Gtk::VBox rowbox3;
-Gtk::VBox rowbox4;
-Gtk::VBox rowbox5;
-Gtk::VBox rowbox6;
+//TODO
 
-	Gtk::VBox innerbox1;
-	Gtk::VBox innerbox2;
-	Gtk::VBox innerbox3;
-	Gtk::VBox innerbox4;
-	Gtk::VBox innerbox5;
-	Gtk::VBox innerbox6;
-	Gtk::Label label1;
-	Gtk::Label label2;
-	Gtk::Label label3;
-	Gtk::Label label4;
-	Gtk::Label label5;
-	Gtk::Label label6;
+void gallery();
+//menuwin
+Orderwin *winwin;
+Gtk::Dialog *menuwin;
+std::vector <std::string> _pic_strings;
 
-	Gtk::Frame frame1;
-	Gtk::Frame frame2;
-	Gtk::Frame frame3;
-	Gtk::Frame frame4;
-	Gtk::Frame frame5;
-	Gtk::Frame frame6;
-
-	Gtk::VBox inner2box1;
-	Gtk::VBox inner2box2;
-	Gtk::VBox inner2box3;
-	Gtk::VBox inner2box4;
-	Gtk::VBox inner2box5;
-	Gtk::VBox inner2box6;
+std::vector <std::string> _itemdescriptions;
+std::vector <std::string> _itemnames;
+	std::vector <Gtk::Image*> _gallery;
+	Gtk::Button *left_button;
+	Gtk::Button *right_button;
+	Gtk::Image *itemimage; 
+Gtk::Label *itemlabel;
+Gtk::Label *itemtitle;
+Gtk::VBox *itembox;
+Gtk::HBox *picbox;
 
 
 
-		//Variables
-		std::vector<Mice::Order> _orders;
-		std::vector<Mice::Manager> _managers;
-		std::vector<Mice::Server> _servers;
-		std::vector<Mice::Customer> _customers; 
-		
+
+void menu_window_next();
+void menu_window_prev();
+
+//TODO
+
+	//Restock Variables
+	Gtk::Dialog *restockdialog;
+	Gtk::HBox *hb_all;
+	Gtk::VBox *vb_containers;
+	Gtk::VBox *vb_scoops;
+	Gtk::VBox *vb_toppings;
+	Gtk::Label *l_container;
+	Gtk::Grid *grid_container;
+	Gtk::Label *name_container;
+	Gtk::Label *quantity_container; 
+	Gtk::Label *l_scoop;
+	Gtk::Grid *grid_scoop; 
+	Gtk::Label *name_scoop;
+	Gtk::Label *quantity_scoop;
+	Gtk::Label *l_topping;
+	Gtk::Grid *grid_topping;
+	Gtk::Label *name_topping;
+	Gtk::Label *quantity_topping;
+
+	vector <Gtk::Label*> q_scoop_vector;
+	vector <Gtk::Label*> q_container_vector;
+	vector <Gtk::Label*> q_topping_vector;
+
+	
+//
+
+void add_manager();
+
+
+
 		std::vector<int> _scoop_selection;
 		std::vector<int> _container_selection;
 		std::vector<int> _topping_selection;
@@ -182,7 +185,12 @@ Gtk::Label *name_m;
 
 
     private:
-                             						 // Create a new order
+
+
+		
+        Mice::Emporium* _emp;                          // Currently active emporium	
+		void save_emporium();
+	
         Mice::Serving create_serving();               // Create a new serving
         int select_container();                       // Select a container index
         int select_scoop();                           // Select a scoop index
@@ -191,10 +199,6 @@ Gtk::Label *name_m;
             (std::vector<std::string> names, 
              std::string title);                      // Select from a list of strings
 
-        std::vector<Mice::Container> _containers;     // All defined containers
-        std::vector<Mice::Scoop> _scoops;             // All defined scoops
-        std::vector<Mice::Topping> _toppings;         // All defined toppings
-        std::vector<Mice::Serving> _servings;         // All defined servings		
 
 		Gtk::Image *new_order_image;   
 		Gtk::Image *add_customer_image;
@@ -204,6 +208,7 @@ Gtk::Label *name_m;
 		Gtk::Image *list_servers_image;
 		Gtk::Image *menu_image;
 		Gtk::Image *pending_image;
+		Gtk::Image *menuwin_image;
 		
 };
 #endif 

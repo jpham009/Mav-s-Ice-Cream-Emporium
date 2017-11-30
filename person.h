@@ -1,40 +1,24 @@
 #ifndef _PERSON_H
 #define _PERSON_H
 #include <string>
-#include <iostream>
-#include <vector>
 
-using namespace std;
+namespace Mice {
+    class Person {
+      public:
+        Person(std::string name, std::string id, std::string phone);
+        Person();
+        std::string name();
+        std::string id();
+        std::string phone();
+        bool is_active();
+        void set_active(bool active);
+		virtual std::string type(); 
+      protected:
+        std::string _name;
+        std::string _id;
+        std::string _phone;
+        bool _active;
+    };
+}
 
-//ERRRONE is going to be deriving from this class!!!
-
-class Person{
-	public:
-	Person(std::string name, std::string phone, std::string id, double salary);
-	void toggle_active();
-	void active();
-	std::string name();
-	std::string phone();
-	std::string id();
-	double salary();
-	void print();
-	virtual string type();
-	//Place and order for ice cream 
-	
-	void set_name(string name);
-	void set_phone(string phone);
-	void set_salary(double salary);
-	
-	private:
-	std::string _name{"N/A"};
-	std::string _phone{"N/A"};
-	std::string _id{"N/A"};
-	double _salary{0};
-	bool _active = true;
-
-};
-
-
-
-#endif //_PERSON_H
-
+#endif

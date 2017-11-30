@@ -1,7 +1,6 @@
 #include "mainwin.h"
 #include <exception>
 #include <stdexcept>
-#include <iostream>
 
 void Mainwin::on_create_item_click() {
 
@@ -131,6 +130,7 @@ void Mainwin::on_create_item_click() {
             return;
         }
 
+        // Data validation
         valid_data = true;
         try {
             d_cost = std::stod(e_cost.get_text());
@@ -152,33 +152,37 @@ void Mainwin::on_create_item_click() {
                 valid_data = false;
             }
         }
-        for (Mice::Container c : _containers) if (c.name() == e_name.get_text()) {
-            e_name.set_text("*** duplicate name ***");
-            valid_data = false;
+
+        for (int c=0; c < _emp->num_containers(); ++c) {
+            if (_emp->container(c).name() == e_name.get_text()) {
+                e_name.set_text("*** duplicate name ***");
+                valid_data = false;
+            }
         }
-        for (Mice::Scoop s : _scoops) if (s.name() == e_name.get_text()) {
-            e_name.set_text("*** duplicate name ***");
-            valid_data = false;
+        for (int m=0; m < _emp->num_scoops(); ++m) {
+            if (_emp->scoop(m).name() == e_name.get_text()) {
+                e_name.set_text("*** duplicate name ***");
+                valid_data = false;
+            }
         }
-        for (Mice::Topping t : _toppings) if (t.name() == e_name.get_text()) {
-            e_name.set_text("*** duplicate name ***");
-            valid_data = false;
+        for (int t=0; t < _emp->num_toppings(); ++t) {
+            if (_emp->topping(t).name() == e_name.get_text()) {
+                e_name.set_text("*** duplicate name ***");
+                valid_data = false;
+            }
         }
     }
         
     // Instance item
     if (type == CONTAINER) {
-        Mice::Container c{e_name.get_text(), e_desc.get_text(), d_cost, d_price, i_max_scoops};
-        _containers.push_back(c);
-        std::cout << c << std::endl;
+        _emp->add_container(
+            Mice::Container{e_name.get_text(), e_desc.get_text(), d_cost, d_price, i_max_scoops});
     } else if (type == SCOOP) {
-        Mice::Scoop s{e_name.get_text(), e_desc.get_text(), d_cost, d_price};
-        _scoops.push_back(s);
-        std::cout << s << std::endl;
+        _emp->add_scoop(
+            Mice::Scoop{e_name.get_text(), e_desc.get_text(), d_cost, d_price});
     } else {
-        Mice::Topping t{e_name.get_text(), e_desc.get_text(), d_cost, d_price, 0};
-        _toppings.push_back(t);
-        std::cout << t << std::endl;
+        _emp->add_topping(
+            Mice::Topping{e_name.get_text(), e_desc.get_text(), d_cost, d_price, 0});
     }
     
     dialog.close();

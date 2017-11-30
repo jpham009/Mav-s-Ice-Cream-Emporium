@@ -2,40 +2,56 @@
 
 namespace Mice{
 
-static int employee_id = 10000;
+Manager::Manager(std::string name, std::string id, std::string phone, double salary) : Person(name, id, phone), _num_orders{0}{}
 
-Manager::Manager(std::string name, std::string phone, std::string id, double salary) : Person(name, phone, id, salary){}
+Manager::Manager(std::istream& ist) {
+    // The header must have been stripped from the incoming stream at this point
+    getline(ist, _name);
+    getline(ist, _id);
+    getline(ist, _phone);
+    ist >> _salary; ist.ignore();
+    ist >> _num_orders; ist.ignore();
+}
+
+void Manager::save(std::ostream& ost) {
+    ost << "#" << std::endl << "MANAGER" << std::endl; // header
+    ost << _name << std::endl;
+    ost << _id << std::endl;
+    ost << _phone << std::endl;
+    ost << _salary << std::endl;
+    ost << _num_orders << std::endl;
+}
 
 string Manager::type(){
 	return "Manager";
 }
 
-/// EMPLOYEE SET FUNCTIONS
-void Manager::set_salary(double newSalary){salary = newSalary;}
-
-void Manager::order_filled(){++orders;}
-
-//// EMPLOYEE GET FUNCTIONS
-int Manager::get_orders(){ return orders;}
+double Manager::pay_manager() { }
+int Manager::num_orders() {return _num_orders;}
+int Manager::salary() {return _salary;}
 
 
-void Manager::print_customer(){
-	for(int i = 0; i < customerData.size(); i++){
-	   //modify only active customer?
-	   cout << "Name: " << customerData[i].name() << " , Phone: " << customerData[i].phone() << endl;
-	}
 }
 
-void Manager::order_up(){
-	++orders;
-}
 
-//// CUSTOMER Get FUNCTIONS
-////TODO///////////
 
-//ADD ITEM CONTAINER,SCOOP,TOPPING
 
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

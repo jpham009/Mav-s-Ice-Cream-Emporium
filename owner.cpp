@@ -1,7 +1,9 @@
 #include "owner.h"
 
-Owner::Owner(std::string name, std::string phone, std::string id, double salary) : Person(name, phone, id, salary){ }
+namespace Mice{
 
-string Owner::type(){
-	return "Head Honcho";
+Owner::Owner(std::string name,  std::string id, std::string phone) : Person(name, id, phone){}
+
+std::string Owner::type(){ return "Head Honcho";}
+
 }

@@ -5,7 +5,7 @@
 		double Mainwin::balance(){return _balance;}
 		double Mainwin::money_in(){return _money_in;}
 		double Mainwin::money_out(){return _money_out;}
-		double Mainwin::profit(){return _profit;}
+		double Mainwin::profit(){_profit = _money_in-_money_out; return _profit;}
 
 void Mainwin::on_money_click(){
 	std::string s = "Money:\n\nBalance: " + to_string_with_precision(balance()) + "\nMoney in: " + to_string_with_precision(money_in()) + "\nMoney out: " + 	to_string_with_precision(money_out()) + "\nProfit: " + to_string_with_precision(profit()) + "\n";

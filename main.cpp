@@ -3,8 +3,9 @@
 
 int main (int argc, char *argv[])
 {
+
   Glib::RefPtr<Gtk::Application> app = 
-    Gtk::Application::create(argc, argv, "edu.uta.cse1325.mice");
+    Gtk::Application::create(argc, argv, "edu.uta.jxp7365.mice");
 
   // Instance a Window
   Mainwin win;
@@ -14,5 +15,7 @@ int main (int argc, char *argv[])
 
   //Show the window and returns when it is closed or hidden
   return app->run(win);
+
+
 }
 

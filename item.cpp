@@ -4,8 +4,8 @@
 
 namespace Mice {
 
-Item::Item(std::string name, std::string description, double cost, double price)
-     : _name{name}, _description{description}, _cost{cost}, _price{price}, _quantity{25}, _max_quantity{25}{ }
+Item::Item(std::string name, std::string description, double cost, double price) : _name{name}, _description{description}, _cost{cost}, _price {price}, _quantity{14}{ }
+Item::Item() : _name{""}, _description{""}, _cost{0}, _price{0}, _quantity{0} { }
 std::string Item::type() const {return "Item";}
 void Item::restock(int quantity) {_quantity  = quantity;}
 void Item::consume(int quantity) {_quantity -= quantity;}
@@ -15,17 +15,8 @@ double Item::cost() const {return _cost;}
 double Item::price() const {return _price;}
 int Item::quantity() const {return _quantity;}
 int Item::max_quantity() const{return _max_quantity;}
-// Gtk::Image photo() {return _photo;}
-}
 
-/*
-std::ostream& operator<<(std::ostream& os, const Mice::Item& item) {
-    os << item.name() << " (" << item.description() << ") cost: $" 
-       << std::setprecision(2) << std::fixed << item.cost() << ", price: $" << item.price() 
-       << ", quantity: " << item.quantity();
-    return os;
 }
-*/
 
 // POLYMORPHISM at item.name()
 std::ostream& operator<<(std::ostream& os, const Mice::Item& item) {

@@ -4,19 +4,19 @@
 
 int Mainwin::select_container() {
     std::vector<std::string> names;
-    for (Mice::Container c : _containers) names.push_back(c.name());
+    for (Mice::Container c : _emp->containers()) names.push_back(c.name());
     return select_from_vector(names, "Container");
 }
 
 int Mainwin::select_scoop() {
     std::vector<std::string> names;
-    for (Mice::Scoop s : _scoops) names.push_back(s.name());
+    for (Mice::Scoop s :_emp->scoops()) names.push_back(s.name());
     return select_from_vector(names, "Scoop");
 }
 
 int Mainwin::select_topping() {
     std::vector<std::string> names;
-    for (Mice::Topping t : _toppings) names.push_back(t.name());
+    for (Mice::Topping t : _emp->toppings()) names.push_back(t.name());
     return select_from_vector(names, "Topping");
 }
 

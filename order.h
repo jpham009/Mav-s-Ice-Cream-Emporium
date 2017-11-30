@@ -5,7 +5,6 @@
 #include <string>
 #include <iostream>
 #include <vector>
-static int _order_number = 1; 
 
 
 namespace Mice{
@@ -14,11 +13,9 @@ class Order {
 
 	public:
 	Order(int num_of_servings);
-	//void print_order();
 	void total();
 	void add_serving(Serving serving); 
-	std::string to_string();
-	///////////////TODO///////////////
+	void to_string();
 	std::vector<Serving> servings(); 
 	int order_number(); 
 	double total_price();
@@ -26,20 +23,27 @@ class Order {
 	void fill();
 	bool state();
 	int get_order_number();
+	bool get_paid();
+	bool paid();
+	std::string get_order_string(); 
+	std::string _order_string;
+	void set_order_number(int i);
+	void cancel();
+	bool cancelled();
 	
-	
-	
-	///////////////TODO///////////////
+
 	private:
 	std::vector<Serving> _servings;	
 	int _num_of_servings; 
 	double _total_price{0};
-	bool _state = false; //true = filled & false = unfilled 
-	int _order_number{0};
+	bool _state{false}; 
+	bool _paid{false};
+	int _order_number;
+	bool _cancelled{false};
 
 };
 
 }
 
-/*std::ostream& operator<<(std::ostream& os, const Mice::Order& order);*/
+
 #endif //_ORDER_H
