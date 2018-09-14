@@ -108,9 +108,9 @@ if(p_access <= 2){
 
     //         S E R V E R
     // (Owner, Manager) “Add a New Employee” Append Server to the Create menu
-    Gtk::MenuItem *menuitem_server = Gtk::manage(new Gtk::MenuItem("_Add New Server", true));
+   // Gtk::MenuItem *menuitem_server = Gtk::manage(new Gtk::MenuItem("_Add New Server", true));
     //menuitem_server->signal_activate().connect(sigc::mem_fun(*this, &Mainwin::on_create_server_click));
-    createmenu->append(*menuitem_server);
+  //  createmenu->append(*menuitem_server);
 
     //     H E L P
     // Create a Help menu and add to the menu bar

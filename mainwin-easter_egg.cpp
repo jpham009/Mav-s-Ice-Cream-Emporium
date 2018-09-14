@@ -10,6 +10,6 @@ void Mainwin::easter_egg(){
 	_emp->add_manager(Mice::Manager{"Johnny Pham", "6825590692", std::to_string(employee_id++), 19.50});		
 	_emp->add_manager(Mice::Manager{"MANAGER1325", "Manager", "Manager", 1.00});
 	_emp->add_server(Mice::Server{"SERVER1325", "Server", "Server", 1.00});
-	_emp->add_customer(Mice::Customer{"CUSTOMER", "Customer", "Customer"});
+	_emp->add_customer(Mice::Customer{"CUSTOMER1325", "Customer", "Customer"});
 	return;
 }
